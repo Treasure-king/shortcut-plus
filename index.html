@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>New Tab</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/ntp-google.css">
+  <link rel="stylesheet" href="styles/shortcuts.css">
+  <link rel="stylesheet" href="styles/groups.css">
+  <link rel="stylesheet" href="styles/search.css">
+  <link rel="stylesheet" href="styles/modal.css">
+  <link rel="stylesheet" href="styles/theme.css">
+  <link rel="stylesheet" href="styles/runner.css">
+</head>
+
+<body>
+
+  <!-- Background Wallpaper Container -->
+  <div id="bg-wallpaper-container"></div>
+
+  <!-- Smart Guides SVG Layer -->
+  <svg id="smart-guides-svg" class="smart-guides-svg"></svg>
+
+  <!-- Top Header Navigation -->
+  <header class="ntp-header">
+    <a href="https://mail.google.com" class="ntp-header-link" target="_blank" rel="noopener">Gmail</a>
+    <a href="https://www.google.com/imghp" class="ntp-header-link" target="_blank" rel="noopener">Images</a>
+
+    <!-- Profile Switcher Dropdown -->
+    <div class="profile-switcher-wrapper">
+      <select class="profile-select-btn" id="profile-switcher-select" title="Switch Workspace Layout Profile">
+        <option value="profile-default">Default Profile</option>
+        <option value="profile-work">Work Mode</option>
+        <option value="profile-personal">Personal Mode</option>
+        <option value="profile-dev">Developer Mode</option>
+      </select>
+    </div>
+
+    <button class="ntp-header-icon-btn" id="header-add-shortcut-btn" title="Add New Shortcut (N)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+    </button>
+    <button class="ntp-header-icon-btn" id="customize-btn" title="Edit Layout (E)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 20h9"></path>
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+      </svg>
+    </button>
+    <button class="ntp-header-icon-btn" id="new-group-header-btn" title="Create Category Group (G)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span>Group</span>
+    </button>
+
+    <!-- Shortcut Runner Arcade Mini-Game -->
+    <button class="ntp-header-icon-btn" id="game-header-btn" title="Play Shortcut Runner (R)"
+      aria-label="Play Shortcut Runner">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="6" y1="12" x2="10" y2="12"></line>
+        <line x1="8" y1="10" x2="8" y2="14"></line>
+        <line x1="15" y1="13" x2="15.01" y2="13"></line>
+        <line x1="18" y1="11" x2="18.01" y2="11"></line>
+        <rect x="2" y="6" width="20" height="12" rx="6"></rect>
+      </svg>
+      <span>Runner</span>
+    </button>
+
+    <!-- Responsive Hamburger Toggle Button -->
+    <button class="ntp-header-icon-btn hamburger-menu-btn" id="hamburger-menu-btn" title="Open Navigation Menu"
+      aria-label="Open navigation menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Google Apps Launcher Waffle Menu -->
+    <div class="google-apps-wrapper">
+      <button class="ntp-header-icon-btn google-apps-btn" id="google-apps-btn" title="Google apps"
+        aria-label="Google apps" aria-expanded="false" aria-haspopup="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+        </svg>
+      </button>
+
+      <div class="google-apps-dropdown hidden" id="google-apps-dropdown" role="menu">
+        <div class="g-apps-scroll-container">
+
+          <!-- Favorites Section -->
+          <div class="g-apps-section">
+            <div class="g-apps-section-title">Your favorites</div>
+            <div class="g-apps-grid">
+              <a href="https://myaccount.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" fill="#1A73E8" />
+                    <path
+                      d="M20 11C16.69 11 14 13.69 14 17C14 20.31 16.69 23 20 23C23.31 23 26 20.31 26 17C26 13.69 23.31 11 20 11ZM20 25C15.33 25 10 27.34 10 30V32H30V30C30 27.34 24.67 25 20 25Z"
+                      fill="white" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Account</span>
+              </a>
+
+              <a href="https://drive.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 512 512">
+                    <path fill="#FFC107" d="M188.7 34.6L34.6 301.4h119.5L308.2 34.6z" />
+                    <path fill="#0066DA" d="M323.3 34.6L169.2 301.4l59.8 103.6 154.1-266.8z" />
+                    <path fill="#00AC47" d="M154.1 301.4L94.3 405h323.4l59.8-103.6z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Drive</span>
+              </a>
+
+              <a href="https://mail.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#4285F4" d="M45 16.2V39c0 1.7-1.3 3-3 3H35.3V23.7L45 16.2z" />
+                    <path fill="#34A853" d="M3 16.2V39c0 1.7 1.3 3 3 3h9.7V23.7L3 16.2z" />
+                    <path fill="#EA4335" d="M35.3 12L24 20.4 12.7 12H3v4.2l21 15.8 21-15.8V12z" />
+                    <path fill="#FBBC04" d="M45 12h-9.7v11.7L45 16.2z" />
+                    <path fill="#C5221F" d="M3 12h9.7v11.7L3 16.2z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Gmail</span>
+              </a>
+
+              <a href="https://www.youtube.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 68 48">
+                    <path fill="#FF0000"
+                      d="M66.52 7.74c-.78-2.93-3.07-5.23-6-6.01C55.2 0 34 0 34 0S12.8 0 7.48 1.73c-2.93.78-5.23 3.08-6 6.01C0 13.06 0 24 0 24s0 10.94 1.48 16.26c.78 2.93 3.07 5.23 6 6.01C12.8 48 34 48 34 48s21.2 0 26.52-1.73c2.93-.78 5.23-3.08 6-6.01C68 34.94 68 24 68 24s0-10.94-1.48-16.26z" />
+                    <path fill="#FFFFFF" d="M27 34l18-10-18-10v20z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">YouTube</span>
+              </a>
+
+              <a href="https://gemini.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 24 24">
+                    <defs>
+                      <linearGradient id="geminiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#1A73E8" />
+                        <stop offset="50%" stop-color="#9334E8" />
+                        <stop offset="100%" stop-color="#F28B82" />
+                      </linearGradient>
+                    </defs>
+                    <path fill="url(#geminiGrad)"
+                      d="M12 2C12 7.52 16.48 12 22 12C16.48 12 12 16.48 12 22C12 16.48 7.52 12 2 12C7.52 12 12 7.52 12 2Z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Gemini</span>
+              </a>
+
+              <a href="https://maps.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#EA4335"
+                      d="M24 4C14.06 4 6 12.06 6 22c0 13.5 18 22 18 22s18-8.5 18-22c0-9.94-8.06-18-18-18z" />
+                    <circle cx="24" cy="20" r="7" fill="#FFFFFF" />
+                    <circle cx="24" cy="20" r="4" fill="#4285F4" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Maps</span>
+              </a>
+
+              <a href="https://www.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#EA4335"
+                      d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.66 0 6.58 5.38 2.56 13.22l7.98 6.19C12.43 13.7 17.74 9.5 24 9.5z" />
+                    <path fill="#4285F4"
+                      d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                    <path fill="#FBBC05"
+                      d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.28-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z" />
+                    <path fill="#34A853"
+                      d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.58 42.62 14.66 48 24 48z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Search</span>
+              </a>
+
+              <a href="https://calendar.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="6" width="36" height="36" rx="8" fill="#4285F4" />
+                    <path fill="#FFFFFF" d="M12 18h24v20H12z" />
+                    <text x="24" y="34" font-size="16" font-weight="bold" fill="#4285F4" text-anchor="middle">31</text>
+                  </svg>
+                </div>
+                <span class="g-app-label">Calendar</span>
+              </a>
+
+              <a href="https://news.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="8" width="36" height="32" rx="4" fill="#1A73E8" />
+                    <path d="M14 16h20v4H14zm0 8h12v4H14zm0 8h16v4H14z" fill="#FFFFFF" />
+                    <rect x="28" y="24" width="6" height="6" fill="#EA4335" />
+                  </svg>
+                </div>
+                <span class="g-app-label">News</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="g-apps-divider"></div>
+
+          <!-- Productivity & Suite Section -->
+          <div class="g-apps-section">
+            <div class="g-apps-section-title">Google Suite & Workspace</div>
+            <div class="g-apps-grid">
+              <a href="https://docs.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#4285F4" d="M30 4H10c-2.2 0-4 1.8-4 4v32c0 2.2 1.8 4 4 4h28c2.2 0 4-1.8 4-4V16L30 4z" />
+                    <path fill="#A0C2F9" d="M30 4v12h12L30 4z" />
+                    <path fill="#FFFFFF" d="M14 22h20v3H14zm0 6h20v3H14zm0 6h14v3H14z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Docs</span>
+              </a>
+
+              <a href="https://sheets.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#0F9D58" d="M30 4H10c-2.2 0-4 1.8-4 4v32c0 2.2 1.8 4 4 4h28c2.2 0 4-1.8 4-4V16L30 4z" />
+                    <path fill="#87CEAC" d="M30 4v12h12L30 4z" />
+                    <path fill="#FFFFFF"
+                      d="M14 20h20v18H14V20zm4 4v3h4v-3h-4zm6 0v3h6v-3h-6zm-6 5v3h4v-3h-4zm6 0v3h6v-3h-6zm-6 5v3h4v-3h-4zm6 0v3h6v-3h-6z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Sheets</span>
+              </a>
+
+              <a href="https://slides.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#F4B400" d="M30 4H10c-2.2 0-4 1.8-4 4v32c0 2.2 1.8 4 4 4h28c2.2 0 4-1.8 4-4V16L30 4z" />
+                    <path fill="#FDE293" d="M30 4v12h12L30 4z" />
+                    <rect x="14" y="22" width="20" height="14" rx="2" fill="#FFFFFF" />
+                    <rect x="17" y="25" width="14" height="8" rx="1" fill="#F4B400" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Slides</span>
+              </a>
+
+              <a href="https://docs.google.com/forms" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#7248B9" d="M30 4H10c-2.2 0-4 1.8-4 4v32c0 2.2 1.8 4 4 4h28c2.2 0 4-1.8 4-4V16L30 4z" />
+                    <path fill="#C2ACE1" d="M30 4v12h12L30 4z" />
+                    <path fill="#FFFFFF" d="M14 22h4v4h-4zm6 0h14v4H20zm-6 7h4v4h-4zm6 0h14v4H20z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Forms</span>
+              </a>
+
+              <a href="https://photos.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 12a12 12 0 0 1 12 12h-12V12z" />
+                    <path fill="#4285F4" d="M36 24a12 12 0 0 1-12 12V24h12z" />
+                    <path fill="#34A853" d="M24 36a12 12 0 0 1-12-12h12v12z" />
+                    <path fill="#FBBC05" d="M12 24a12 12 0 0 1 12-12v12H12z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Photos</span>
+              </a>
+
+              <a href="https://meet.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="10" width="24" height="28" rx="4" fill="#00832D" />
+                    <path fill="#0066DA" d="M30 18l12-8v28l-12-8V18z" />
+                    <circle cx="18" cy="24" r="5" fill="#FFBA00" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Meet</span>
+              </a>
+
+              <a href="https://translate.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#4285F4" d="M26 6H8c-2.2 0-4 1.8-4 4v22c0 2.2 1.8 4 4 4h18V6z" />
+                    <path fill="#1557D0"
+                      d="M15 14h-3v3h-3v3h6c-.4 1.5-1.3 2.9-2.5 4-1-1-1.7-2.1-2.1-3.3h-2.2c.5 1.8 1.5 3.5 3 4.8L8.6 30 10.7 32l3.7-3.7 3.7 3.7 2.1-2-3.6-3.7c1.7-1.5 2.9-3.4 3.4-5.6V14z" />
+                    <path fill="#34A853"
+                      d="M40 16H22c-2.2 0-4 1.8-4 4v22c0 2.2 1.8 4 4 4h18c2.2 0 4-1.8 4-4V20c0-2.2-1.8-4-4-4z" />
+                    <path fill="#FFFFFF"
+                      d="M31 23h-2.5l-5.5 14h2.7l1.3-3.5h5.9l1.3 3.5h2.8L31 23zm-3.1 8l2.1-5.8 2.1 5.8h-4.2z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Translate</span>
+              </a>
+
+              <a href="https://keep.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="8" y="6" width="32" height="36" rx="6" fill="#FFBB00" />
+                    <path fill="#FFFFFF"
+                      d="M24 12c-4.4 0-8 3.6-8 8 0 2.6 1.3 4.9 3.2 6.3.8.6 1.8 1.7 1.8 2.7v1h6v-1c0-1 1-2.1 1.8-2.7C30.7 24.9 32 22.6 32 20c0-4.4-3.6-8-8-8zm-2 20h4v2h-4v-2z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Keep</span>
+              </a>
+
+              <a href="https://contacts.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="8" width="36" height="32" rx="4" fill="#1A73E8" />
+                    <circle cx="24" cy="20" r="6" fill="#FFFFFF" />
+                    <path d="M14 34c0-4.4 4.5-8 10-8s10 3.6 10 8z" fill="#FFFFFF" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Contacts</span>
+              </a>
+
+              <a href="https://chat.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#00832D" d="M10 8h28c2.2 0 4 1.8 4 4v20c0 2.2-1.8 4-4 4H16L8 42V12c0-2.2 1.8-4 4-4z" />
+                    <path fill="#FFFFFF" d="M16 18h16v3H16zm0 6h12v3H16z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Chat</span>
+              </a>
+
+              <a href="https://tasks.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="18" fill="#1A73E8" />
+                    <path d="M18 24l4 4 8-8" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"
+                      stroke-linejoin="round" fill="none" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Tasks</span>
+              </a>
+
+              <a href="https://earth.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="18" fill="#185ABC" />
+                    <path fill="#8AB4F8" d="M12 24c0-6.6 5.4-12 12-12 3 0 5.7 1.1 7.8 3L24 24h-12z" />
+                    <path fill="#FFFFFF" opacity="0.3"
+                      d="M6 24c0 9.9 8.1 18 18 18s18-8.1 18-18S33.9 6 24 6 6 14.1 6 24zm4 0c0-7.7 6.3-14 14-14s14 6.3 14 14-6.3 14-14 14S10 31.7 10 24z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Earth</span>
+              </a>
+
+              <a href="https://www.google.com/finance" class="g-app-tile" target="_blank" rel="noopener"
+                role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="8" width="36" height="32" rx="6" fill="#0F9D58" />
+                    <path d="M14 30l6-8 6 4 8-10" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"
+                      stroke-linejoin="round" fill="none" />
+                    <polyline points="28 16 34 16 34 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"
+                      stroke-linejoin="round" fill="none" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Finance</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="g-apps-divider"></div>
+
+          <!-- Business, AI & Developer Section -->
+          <div class="g-apps-section">
+            <div class="g-apps-section-title">Business, AI & Dev Tools</div>
+            <div class="g-apps-grid">
+              <a href="https://notebooklm.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="8" y="6" width="32" height="36" rx="6" fill="#7C4DFF" />
+                    <path d="M16 16h16v3H16zm0 6h16v3H16zm0 6h10v3H16z" fill="#FFFFFF" />
+                    <circle cx="34" cy="32" r="5" fill="#00E5FF" />
+                  </svg>
+                </div>
+                <span class="g-app-label">NotebookLM</span>
+              </a>
+
+              <a href="https://ads.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#4285F4"
+                      d="M14.6 37.4l11.7-27.4c1.2-2.8 4.6-3.8 7.3-2.3 2.7 1.5 3.5 5 2.2 7.7L24.1 32.8c-1.2 2.8-4.6 3.8-7.3 2.3-2.7-1.5-3.5-5-2.2-7.7z" />
+                    <path fill="#34A853"
+                      d="M10.8 28.5L22.5 1.1c1.2-2.8 4.6-3.8 7.3-2.3 2.7 1.5 3.5 5 2.2 7.7L20.3 33.9c-1.2 2.8-4.6 3.8-7.3 2.3-2.7-1.5-3.5-5-2.2-7.7z"
+                      opacity="0.8" />
+                    <circle cx="12" cy="36" r="6" fill="#FBBC04" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Google Ads</span>
+              </a>
+
+              <a href="https://analytics.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="24" width="8" height="16" rx="4" fill="#F9AB00" />
+                    <rect x="20" y="14" width="8" height="26" rx="4" fill="#F9AB00" />
+                    <rect x="34" y="8" width="8" height="32" rx="4" fill="#EA4335" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Analytics</span>
+              </a>
+
+              <a href="https://cloud.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#4285F4"
+                      d="M38 28c0-5.5-4.5-10-10-10-1.2 0-2.4.2-3.5.6C23 14.1 18.8 11 14 11c-6.1 0-11 4.9-11 11 0 .7.1 1.4.2 2C1.3 25.2 0 27.4 0 30c0 4.4 3.6 8 8 8h29c4.4 0 8-3.6 8-8 0-3.9-2.8-7.2-6.6-7.9-.1-.7-.4-1.4-.4-2.1z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Cloud</span>
+              </a>
+
+              <a href="https://sites.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="8" width="36" height="32" rx="4" fill="#1A73E8" />
+                    <path d="M6 16h36v4H6z" fill="#FFFFFF" opacity="0.4" />
+                    <rect x="12" y="24" width="10" height="10" fill="#FFFFFF" />
+                    <rect x="26" y="24" width="10" height="4" fill="#FFFFFF" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Sites</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="g-apps-divider"></div>
+
+          <!-- Utilities & Security Section -->
+          <div class="g-apps-section">
+            <div class="g-apps-section-title">Utilities & Services</div>
+            <div class="g-apps-grid">
+              <a href="https://passwords.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#1A73E8" d="M24 4L8 10v12c0 10.6 6.8 20.5 16 23 9.2-2.5 16-12.4 16-23V10L24 4z" />
+                    <circle cx="24" cy="20" r="4" fill="#FFFFFF" />
+                    <path fill="#FFFFFF" d="M22 23h4v10h-4z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Passwords</span>
+              </a>
+
+              <a href="https://one.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#4285F4"
+                      d="M24 4a20 20 0 1 0 20 20A20 20 0 0 0 24 4zm0 32a12 12 0 1 1 12-12 12 12 0 0 1-12 12z" />
+                    <path fill="#EA4335" d="M24 10a14 14 0 0 0-14 14h4a10 10 0 0 1 10-10z" />
+                    <path fill="#FBBC04" d="M38 24a14 14 0 0 0-14-14v4a10 10 0 0 1 10 10z" />
+                    <path fill="#34A853" d="M24 38a14 14 0 0 0 14-14h-4a10 10 0 0 1-10 10z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Google One</span>
+              </a>
+
+              <a href="https://store.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="10" y="14" width="28" height="26" rx="4" fill="#4285F4" />
+                    <path d="M16 14a8 8 0 0 1 16 0" stroke="#4285F4" stroke-width="4" fill="none" />
+                    <circle cx="24" cy="26" r="4" fill="#FFFFFF" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Store</span>
+              </a>
+
+              <a href="https://play.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#4285F4" d="M7 6v36l18-18L7 6z" />
+                    <path fill="#34A853" d="M25 24l7.5 7.5L40 27c1.3-.7 1.3-2.3 0-3l-7.5-4.5L25 24z" />
+                    <path fill="#EA4335" d="M7 42l18-18 7.5 7.5-17 9.8c-1.3.8-3.2-.2-3.2-1.7V42z" />
+                    <path fill="#FBBC04" d="M7 6v2.3c0 1.5 1.9 2.5 3.2 1.7L25 24l7.5-4.5L10 6.5C8.7 5.8 7 6.8 7 6z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Play</span>
+              </a>
+
+              <a href="https://wallet.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="12" width="36" height="24" rx="4" fill="#4285F4" />
+                    <path fill="#34A853" d="M6 20h36v16H6z" />
+                    <circle cx="34" cy="28" r="4" fill="#FBBC04" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Wallet</span>
+              </a>
+
+              <a href="https://classroom.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="8" width="36" height="32" rx="4" fill="#0F9D58" />
+                    <rect x="9" y="11" width="30" height="26" fill="#F4B400" />
+                    <circle cx="24" cy="20" r="4" fill="#FFFFFF" />
+                    <path d="M16 32c0-3 3.6-5 8-5s8 2 8 5z" fill="#FFFFFF" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Classroom</span>
+              </a>
+
+              <a href="https://www.google.com/travel" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="18" fill="#1A73E8" />
+                    <path
+                      d="M14 26l7-2 5 7 2-1-3-8 8-2c1-.3 1.5-1.3 1.2-2.3-.3-1-1.3-1.5-2.3-1.2l-8 2-6-5-2 1 2 7-7 2-2-3-2 1 3 5z"
+                      fill="#FFFFFF" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Travel</span>
+              </a>
+
+              <a href="https://scholar.google.com" class="g-app-tile" target="_blank" rel="noopener" role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <path fill="#4285F4" d="M24 8L4 18l20 10 20-10L24 8z" />
+                    <path fill="#1557D0" d="M12 24v10c0 4 5.4 7 12 7s12-3 12-7V24L24 30 12 24z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Scholar</span>
+              </a>
+
+              <a href="https://artsandculture.google.com" class="g-app-tile" target="_blank" rel="noopener"
+                role="menuitem">
+                <div class="g-app-icon-wrap">
+                  <svg width="38" height="38" viewBox="0 0 48 48">
+                    <rect x="6" y="10" width="36" height="28" rx="4" fill="#EA4335" />
+                    <path fill="#FFFFFF" d="M12 30V18h4v12zm8 0V18h4v12zm8 0V18h4v12zm8 0V18h4v12zM10 14h28v3H10z" />
+                  </svg>
+                </div>
+                <span class="g-app-label">Arts & Culture</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- More from Google Footer Button -->
+          <div class="g-apps-footer">
+            <a href="https://about.google/products/" class="g-apps-more-btn" target="_blank" rel="noopener"
+              role="menuitem">
+              More from Google
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <button class="ntp-header-icon-btn" id="settings-btn" title="Settings & Backup" style="padding: 0 10px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+        </path>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Responsive Slide-Over Sidebar Drawer & Backdrop Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="sidebar-drawer" id="sidebar-drawer">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--btn-primary)" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        <span>Shortcut+ Menu</span>
+      </div>
+      <button type="button" class="sidebar-close-btn" id="sidebar-close-btn" title="Close Sidebar">✕</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Workspace Profile</div>
+        <div class="sidebar-profile-wrapper">
+          <select class="profile-select-btn" id="sidebar-profile-select"
+            title="Switch Workspace Layout Profile"></select>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Quick Actions</div>
+        <div class="sidebar-actions-grid">
+          <button class="sidebar-action-btn" id="sidebar-customize-btn" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+            <span>Edit Layout</span>
+          </button>
+
+          <button class="sidebar-action-btn" id="sidebar-new-group-btn" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>+ Group</span>
+          </button>
+
+          <button class="sidebar-action-btn" id="sidebar-game-btn" type="button"
+            style="border-color: rgba(0, 242, 254, 0.4); background: rgba(0, 242, 254, 0.08);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="12" x2="10" y2="12"></line>
+              <line x1="8" y1="10" x2="8" y2="14"></line>
+              <line x1="15" y1="13" x2="15.01" y2="13"></line>
+              <line x1="18" y1="11" x2="18.01" y2="11"></line>
+              <rect x="2" y="6" width="20" height="12" rx="6"></rect>
+            </svg>
+            <span style="color: #00f2fe; font-weight: 600;">Play Runner 🎮</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Settings & Links</div>
+        <div class="sidebar-actions-grid">
+          <button class="sidebar-action-btn" id="sidebar-docs-btn" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>Guide & Hotkeys</span>
+          </button>
+          <button class="sidebar-action-btn" id="sidebar-settings-btn" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+              </path>
+            </svg>
+            <span>Settings</span>
+          </button>
+          <a href="https://mail.google.com" class="sidebar-action-btn" target="_blank" rel="noopener">
+            <span>Gmail</span>
+          </a>
+          <a href="https://www.google.com/imghp" class="sidebar-action-btn" target="_blank" rel="noopener">
+            <span>Images</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main NTP Container -->
+  <main class="ntp-main">
+
+    <!-- Google Logo SVG -->
+    <div class="google-logo-container" id="google-logo-section">
+      <div class="section-edit-badge">
+        <span class="section-edit-btn section-drag-handle" title="Drag to place logo anywhere on screen">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="5 9 2 12 5 15"></polyline>
+            <polyline points="9 5 12 2 15 5"></polyline>
+            <polyline points="15 19 12 22 9 19"></polyline>
+            <polyline points="19 9 22 12 19 15"></polyline>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="12" y1="2" x2="12" y2="22"></line>
+          </svg>
+          Drag Logo
+        </span>
+        <button type="button" class="section-edit-btn" id="logo-reset-pos-btn" title="Reset logo to default position"
+          style="display: none;">Center</button>
+        <button type="button" class="section-edit-btn btn-remove" id="logo-hide-btn" title="Hide Google Logo">✕
+          Hide</button>
+      </div>
+      <svg class="google-logo" viewBox="0 0 272 92" width="272" height="92">
+        <path fill="#4285F4"
+          d="M115.75 47.18c0 12.77-9.99 21.88-22.34 21.88-12.47 0-22.46-9.11-22.46-21.88s9.99-21.88 22.46-21.88c12.35 0 22.34 9.11 22.34 21.88zm-9.75 0c0-7.89-5.74-13.3-12.59-13.3-6.96 0-12.7 5.41-12.7 13.3 0 7.77 5.74 13.3 12.7 13.3 6.85 0 12.59-5.53 12.59-13.3z" />
+        <path fill="#EA4335"
+          d="M163.75 47.18c0 12.77-9.99 21.88-22.34 21.88-12.47 0-22.46-9.11-22.46-21.88s9.99-21.88 22.46-21.88c12.35 0 22.34 9.11 22.34 21.88zm-9.75 0c0-7.89-5.74-13.3-12.59-13.3-6.96 0-12.7 5.41-12.7 13.3 0 7.77 5.74 13.3 12.7 13.3 6.85 0 12.59-5.53 12.59-13.3z" />
+        <path fill="#FBBC05"
+          d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.29h-.35c-2.13 2.62-6.25 4.93-11.45 4.93-10.91 0-20.94-9.49-20.94-21.75 0-12.38 10.03-21.88 20.94-21.88 5.2 0 9.32 2.31 11.45 4.81h.35v-3.98h9.3zm-8.56 20.96c0-7.77-5.21-13.3-12.12-13.3-6.96 0-12.35 5.53-12.35 13.3 0 7.65 5.39 13.3 12.35 13.3 6.91 0 12.12-5.65 12.12-13.3z" />
+        <path fill="#4285F4" d="M225 3v65h-9.5V3h9.5z" />
+        <path fill="#34A853"
+          d="M262.02 54.47l7.56 5.04c-2.44 3.61-8.32 9.88-18.56 9.88-12.59 0-21.99-9.88-21.99-22.12 0-13.13 9.49-22.12 20.89-22.12 11.51 0 17.1 9.11 18.91 14.01l1.04 2.68-28.84 11.95c2.21 4.33 5.62 6.54 10.51 6.54 4.89 0 8.16-2.42 10.48-5.86zm-13.98-7.77l19.29-8c-1.05-2.68-4.18-7.42-10.57-7.42-6.32 0-11.66 5.04-11.66 12.78z" />
+        <path fill="#EA4335"
+          d="M35.29 41.71V31.4h31.99c.31 1.64.48 3.58.48 5.68 0 7.02-1.93 15.73-8.24 22.02-6.13 6.36-14.48 9.94-24.23 9.94C16.03 69.04 0 53.53 0 34.52 0 15.51 16.03 0 35.29 0c10.52 0 17.98 4.14 23.63 9.5l-6.64 6.64c-4.04-3.79-9.53-6.79-16.99-6.79-13.78 0-24.6 11.13-24.6 25.17s10.82 25.17 24.6 25.17c8.96 0 14.07-3.59 17.34-6.86 2.62-2.62 4.35-6.36 5.03-11.23H35.29z" />
+      </svg>
+    </div>
+
+    <!-- Search Form -->
+    <div class="search-container" id="search-bar-section">
+      <div class="section-edit-badge">
+        <span class="section-edit-btn section-drag-handle" title="Drag to place search bar anywhere on screen">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="5 9 2 12 5 15"></polyline>
+            <polyline points="9 5 12 2 15 5"></polyline>
+            <polyline points="15 19 12 22 9 19"></polyline>
+            <polyline points="19 9 22 12 19 15"></polyline>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="12" y1="2" x2="12" y2="22"></line>
+          </svg>
+          Drag Search
+        </span>
+        <button type="button" class="section-edit-btn" id="search-reset-pos-btn"
+          title="Reset search bar to default position" style="display: none;">Center</button>
+        <button type="button" class="section-edit-btn btn-remove" id="search-hide-btn" title="Hide Search Bar">✕
+          Hide</button>
+      </div>
+      <form class="search-form" id="search-form" action="https://www.google.com/search" method="GET">
+        <div class="search-input-wrapper">
+          <div class="search-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <input type="text" name="q" class="search-input" id="search-input"
+            placeholder="Search Google or filter shortcuts (Ctrl+K or /)" autocomplete="off">
+        </div>
+      </form>
+
+      <!-- Google-Style Search History Dropdown Popup -->
+      <div class="search-history-dropdown" id="search-history-dropdown" style="display: none;">
+        <!-- Dynamically rendered history items -->
+      </div>
+    </div>
+
+    <!-- Shortcuts Container & Grid -->
+    <div class="shortcuts-container" id="shortcuts-container">
+      <div class="shortcuts-grid mode-grid" id="shortcuts-grid">
+        <!-- Shortcut tiles dynamically rendered here -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Edit Layout Floating Toolbar -->
+  <div class="edit-toolbar" id="edit-toolbar">
+    <span class="edit-toolbar-title">Layout Mode:</span>
+    <div class="mode-toggle-group">
+      <button type="button" class="mode-toggle-btn active" id="mode-grid-btn" title="Smart Grid Layout">Smart
+        Grid</button>
+      <button type="button" class="mode-toggle-btn" id="mode-free-btn" title="Free Placement Layout">Free
+        Placement</button>
+    </div>
+    <button type="button" class="mode-toggle-btn" id="mode-select-btn" title="Multi-select & Delete Shortcuts (M)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+        <polyline points="9 11 12 14 22 4"></polyline>
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+      </svg>
+      Multi-Select
+    </button>
+    <button type="button" class="mode-toggle-btn" id="toolbar-open-sidebar-btn" title="Open Edit Sidebar & Inspector">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="15" y1="3" x2="15" y2="21"></line>
+      </svg>
+      Sidebar
+    </button>
+    <button type="button" class="btn-done" id="edit-done-btn">Done</button>
+  </div>
+
+  <!-- Multi-Select Floating Action Bar -->
+  <div class="multiselect-bar" id="multiselect-bar">
+    <div class="multiselect-info">
+      <span class="multiselect-count" id="multiselect-count-text">0 selected</span>
+    </div>
+    <div class="multiselect-actions">
+      <button type="button" class="btn-sm btn-primary" id="multiselect-open-btn"
+        title="Open All Selected&#10;• Click: New Tabs&#10;• Shift+Click: New Window&#10;• Alt+Click: Incognito Window"
+        disabled>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: -1px;">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        <span>Open Selected</span>
+      </button>
+      <button type="button" class="btn-sm btn-secondary" id="multiselect-select-all-grid-btn">Select All</button>
+      <button type="button" class="btn-sm btn-secondary" id="multiselect-clear-grid-btn">Clear</button>
+      <button type="button" class="btn-sm btn-danger" id="multiselect-delete-btn" disabled>Delete Selected</button>
+      <button type="button" class="btn-sm btn-secondary" id="multiselect-exit-btn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Right-Side Slide-Over Panel Overlay Backdrop -->
+  <div class="side-panel-overlay" id="side-panel-overlay"></div>
+
+  <!-- Right-Side Slide-Over Panel Drawer -->
+  <aside class="side-panel-drawer" id="side-panel-drawer" aria-hidden="true">
+    <div class="side-panel-header">
+      <div class="side-panel-title-wrap">
+        <h2 class="side-panel-title" id="side-panel-title">Settings & Customization</h2>
+      </div>
+      <button type="button" class="side-panel-close-btn" id="side-panel-close-btn" title="Close Panel (Esc)">✕</button>
+    </div>
+
+    <div class="side-panel-body">
+      <!-- 1. Add / Edit Shortcut Form View -->
+      <div class="side-panel-view hidden" id="view-shortcut-form">
+        <form id="shortcut-form">
+          <input type="hidden" id="shortcut-id">
+          <div class="input-field">
+            <label class="input-label" for="shortcut-name-input">Name</label>
+            <input type="text" class="text-input" id="shortcut-name-input" placeholder="e.g. GitHub" required
+              autocomplete="off">
+          </div>
+          <div class="input-field" style="margin-top: 14px;">
+            <label class="input-label" for="shortcut-url-input">URL</label>
+            <input type="text" class="text-input" id="shortcut-url-input" placeholder="e.g. github.com" required
+              autocomplete="off">
+          </div>
+          <div class="input-field" style="margin-top: 14px;">
+            <label class="input-label" for="shortcut-group-select">Category / Group</label>
+            <select class="text-input" id="shortcut-group-select" style="cursor: pointer;"></select>
+          </div>
+          <div class="modal-footer" style="margin-top: 24px;">
+            <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+            <button type="button" class="btn btn-danger" id="modal-delete-btn" style="display: none;">Remove</button>
+            <button type="submit" class="btn btn-primary" id="modal-save-btn">Done</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 2. Create Category Group View -->
+      <div class="side-panel-view hidden" id="view-create-group">
+        <form id="create-group-form">
+          <div class="input-field">
+            <label class="input-label" for="new-group-name-input">Category Name</label>
+            <input type="text" class="text-input" id="new-group-name-input"
+              placeholder="e.g. Frontend Tools, Cloud, Work" required autocomplete="off">
+          </div>
+
+          <div class="input-field" style="margin-top: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="input-label">Select Shortcuts for this Category</label>
+              <div style="font-size: 12px; display: flex; gap: 12px;">
+                <a href="#" id="multiselect-select-all" style="color: var(--btn-primary); text-decoration: none;">Select
+                  All</a>
+                <a href="#" id="multiselect-clear-all"
+                  style="color: var(--text-secondary); text-decoration: none;">Clear All</a>
+              </div>
+            </div>
+
+            <input type="text" class="text-input" id="multiselect-search-input" placeholder="Search shortcuts..."
+              style="height: 36px; margin-top: 6px; font-size: 13px;">
+            <div class="multiselect-container" id="multiselect-list" style="margin-top: 8px;"></div>
+          </div>
+
+          <div class="modal-footer" style="margin-top: 24px;">
+            <button type="button" class="btn btn-secondary" id="create-group-cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="create-group-save-btn">Create Category</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 3. Import Shortcuts from Profile View -->
+      <div class="side-panel-view hidden" id="view-import-profile">
+        <form id="import-profile-form">
+          <div class="input-field">
+            <label class="input-label" for="import-source-profile-select">Source Workspace Profile</label>
+            <select class="text-input" id="import-source-profile-select" style="cursor: pointer;"></select>
+          </div>
+
+          <div class="input-field" style="margin-top: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="input-label">Select Shortcuts to Import</label>
+              <div style="font-size: 12px; display: flex; gap: 12px;">
+                <a href="#" id="import-multiselect-select-all"
+                  style="color: var(--btn-primary); text-decoration: none;">Select All</a>
+                <a href="#" id="import-multiselect-clear-all"
+                  style="color: var(--text-secondary); text-decoration: none;">Clear All</a>
+              </div>
+            </div>
+
+            <input type="text" class="text-input" id="import-multiselect-search-input" placeholder="Search shortcuts..."
+              style="height: 36px; margin-top: 6px; font-size: 13px;">
+            <div class="multiselect-container" id="import-multiselect-list" style="margin-top: 8px;"></div>
+          </div>
+
+          <div class="modal-footer" style="margin-top: 24px;">
+            <button type="button" class="btn btn-secondary" id="import-profile-cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="import-profile-save-btn">Import Selected</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 4. Edit Layout Inspector View -->
+      <div class="side-panel-view hidden" id="view-edit-inspector">
+        <div class="settings-section">
+          <div class="settings-label" style="font-size: 15px; margin-bottom: 2px;">Layout Mode & Placement Presets</div>
+          <div class="settings-sublabel" style="margin-bottom: 12px;">Switch between Smart Grid and Free Placement or
+            choose a 1-click layout preset</div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button type="button" class="btn btn-secondary" id="inspector-mode-grid" style="font-size: 13px;">
+              Smart Grid
+            </button>
+            <button type="button" class="btn btn-secondary active" id="inspector-mode-free" style="font-size: 13px;">
+              Free Placement
+            </button>
+          </div>
+
+          <div class="input-field" style="margin-top: 10px;">
+            <label class="input-label" for="inspector-preset-select">1-Click Layout Preset</label>
+            <div style="display: flex; gap: 8px; margin-top: 4px;">
+              <select class="text-input" id="inspector-preset-select" style="flex: 1; cursor: pointer;">
+                <option value="sidebar-split">⭐ Sidebar Split (Logo Left, Shortcuts Right)</option>
+                <option value="classic-center">Classic Center Matrix</option>
+                <option value="bottom-dock">macOS-Style Bottom Dock</option>
+                <option value="command-dashboard">Command Dashboard (Shortcuts Left)</option>
+                <option value="dual-column">Dual Column Split (Left & Right)</option>
+              </select>
+              <button type="button" class="btn btn-primary" id="inspector-apply-preset-btn"
+                style="white-space: nowrap;">Apply Preset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row" style="justify-content: space-between;">
+            <div>
+              <div class="settings-label">Precision Dimension Inspector</div>
+              <div class="settings-sublabel">Pixel precision resizing for single or multi-selected tiles</div>
+            </div>
+            <span id="inspector-selection-badge"
+              style="font-size: 11px; padding: 3px 8px; border-radius: 10px; background: rgba(11,87,208,0.12); color: var(--btn-primary); font-weight: 600;">0
+              selected</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px;">
+            <div class="input-field">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="input-label" for="inspector-width-input">Width (px)</label>
+                <div style="display: flex; gap: 3px;">
+                  <button type="button" class="btn btn-secondary" id="step-down-w"
+                    style="height: 20px; padding: 0 5px; font-size: 11px;" title="Decrease width by 8px">-8</button>
+                  <button type="button" class="btn btn-secondary" id="step-up-w"
+                    style="height: 20px; padding: 0 5px; font-size: 11px;" title="Increase width by 8px">+8</button>
+                </div>
+              </div>
+              <input type="number" class="text-input" id="inspector-width-input" placeholder="112" min="24" max="450"
+                step="4">
+            </div>
+            <div class="input-field">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="input-label" for="inspector-height-input">Height (px)</label>
+                <div style="display: flex; gap: 3px;">
+                  <button type="button" class="btn btn-secondary" id="step-down-h"
+                    style="height: 20px; padding: 0 5px; font-size: 11px;" title="Decrease height by 8px">-8</button>
+                  <button type="button" class="btn btn-secondary" id="step-up-h"
+                    style="height: 20px; padding: 0 5px; font-size: 11px;" title="Increase height by 8px">+8</button>
+                </div>
+              </div>
+              <input type="number" class="text-input" id="inspector-height-input" placeholder="112" min="24" max="450"
+                step="4">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+            <button type="button" class="btn btn-secondary" style="height: 28px; padding: 0 8px; font-size: 11.5px;"
+              id="size-preset-tiny">Tiny (40px)</button>
+            <button type="button" class="btn btn-secondary" style="height: 28px; padding: 0 8px; font-size: 11.5px;"
+              id="size-preset-small">Compact (60px)</button>
+            <button type="button" class="btn btn-secondary" style="height: 28px; padding: 0 8px; font-size: 11.5px;"
+              id="size-preset-medium">Standard (112px)</button>
+            <button type="button" class="btn btn-secondary" style="height: 28px; padding: 0 8px; font-size: 11.5px;"
+              id="size-preset-large">Large (140px)</button>
+            <button type="button" class="btn btn-secondary" style="height: 28px; padding: 0 8px; font-size: 11.5px;"
+              id="size-preset-pill">Pill (160x44)</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-label" style="font-size: 15px; margin-bottom: 2px;">Multi-Select Batch Actions</div>
+          <div class="settings-sublabel" style="margin-bottom: 10px;">Select multiple shortcuts to arrange, open, or
+            manage
+            simultaneously</div>
+
+          <button type="button" class="btn btn-primary" id="inspector-open-sel-btn"
+            title="Open All Selected&#10;• Click: New Tabs&#10;• Shift+Click: New Window&#10;• Alt+Click: Incognito Window"
+            style="width: 100%; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;"
+            disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span>Open Selected</span>
+          </button>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button type="button" class="btn btn-secondary" id="inspector-select-all-btn">Select All</button>
+            <button type="button" class="btn btn-secondary" id="inspector-clear-sel-btn">Clear</button>
+          </div>
+          <button type="button" class="btn btn-danger" id="inspector-delete-sel-btn"
+            style="margin-top: 8px; width: 100%;" disabled>
+            Delete Selected Shortcuts
+          </button>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Reset Positions & Sizes</div>
+              <div class="settings-sublabel">Restore default coordinate and dimension layouts</div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn btn-secondary" id="inspector-reset-pos-btn"
+                style="font-size: 12px; padding: 0 10px;">Reset Pos</button>
+              <button type="button" class="btn btn-secondary" id="inspector-reset-sizes-btn"
+                style="font-size: 12px; padding: 0 10px;">Reset Sizes</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="margin-top: 14px;">
+          <button type="button" class="btn btn-primary" id="inspector-done-btn"
+            style="width: 100%; height: 42px; font-size: 14.5px; font-weight: 600;">Done Editing</button>
+        </div>
+      </div>
+
+      <!-- 5. Settings & Customization View -->
+      <div class="side-panel-view" id="view-settings">
+        <div class="settings-section">
+          <div class="settings-label" style="font-size: 15px; margin-bottom: 2px;">Page Component Toggles & Positioning
+          </div>
+          <div class="settings-sublabel" style="margin-bottom: 12px;">Toggle individual page elements or reset free drag
+            placements</div>
+
+          <div class="settings-row" style="margin-bottom: 10px;">
+            <div>
+              <div class="settings-label">Drag Positions</div>
+              <div class="settings-sublabel">Reset custom free drag positions for Logo and Search Bar</div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="reset-all-positions-btn"
+              style="height: 36px; padding: 0 14px; font-size: 13px;">
+              Reset Positions
+            </button>
+          </div>
+
+          <div
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; background-color: var(--shortcut-icon-bg); padding: 10px 12px; border-radius: 8px;">
+            <div class="settings-row" style="justify-content: space-between;">
+              <span class="settings-label" style="font-size: 13px;">Google Logo</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="toggle-logo-check" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="settings-row" style="justify-content: space-between;">
+              <span class="settings-label" style="font-size: 13px;">Search Bar</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="toggle-search-check" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="settings-row" style="justify-content: space-between;">
+              <span class="settings-label" style="font-size: 13px;">Shortcuts Grid</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="show-shortcuts-toggle" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="settings-row" style="justify-content: space-between;">
+              <span class="settings-label" style="font-size: 13px;">Header Navigation</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="toggle-header-check" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Workspace Profiles</div>
+              <div class="settings-sublabel">Manage profiles (Max 8 limit) or copy shortcuts</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn btn-secondary" id="import-profile-settings-btn">Import</button>
+              <button type="button" class="btn btn-secondary" id="add-profile-settings-btn">+ Profile</button>
+            </div>
+          </div>
+          <div class="profiles-list-container" id="profiles-settings-list"
+            style="margin-top: 6px; display: flex; flex-direction: column; gap: 6px; max-height: 165px; overflow-y: auto;">
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Tile Display Style</div>
+              <div class="settings-sublabel">Choose Standard Grid, Circular Minimalist, Compact Pill, or Minimal Text
+                List</div>
+            </div>
+            <select class="text-input" id="tile-style-select" style="width: 190px; cursor: pointer;">
+              <option value="grid">Standard Grid Tile</option>
+              <option value="circular">Circular Minimalist (Icon Only)</option>
+              <option value="pill">Compact Pill View</option>
+              <option value="list">Minimal Text List</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Color Theme</div>
+              <div class="settings-sublabel">Choose Light, Dark, or System Sync</div>
+            </div>
+            <select class="text-input" id="theme-select" style="width: 170px; cursor: pointer;">
+              <option value="system">System Auto</option>
+              <option value="light">Light Mode</option>
+              <option value="dark">Dark Mode</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Background & Wallpaper</div>
+              <div class="settings-sublabel">Spatial cupboard presets, ambient aesthetic, videos, or custom images</div>
+            </div>
+            <select class="text-input" id="bg-mode-select" style="width: 230px; cursor: pointer;">
+              <optgroup label="⭐ Spatial Cupboard Workstations">
+                <option value="spatial_dev_sikh">⭐ Sikh Dev Studio (Cupboard)</option>
+                <option value="spatial_dev_green">⭐ Green Hoodie & Pup (Cupboard)</option>
+                <option value="spatial_dev_purple">⭐ Neon Purple & Cat (Cupboard)</option>
+                <option value="spatial_dev_grind">⭐ Battlestation Dev (Cupboard)</option>
+                <option value="spatial_dev_corgi">⭐ Warm Loft & Corgi (Cupboard)</option>
+              </optgroup>
+              <optgroup label="🎞️ Living Animated Wallpapers">
+                <option value="animated_dev">🎞️ Dev Studio (Animated)</option>
+                <option value="animated_pixel_room">🎞️ Cozy Pixel Studio (Animated)</option>
+              </optgroup>
+              <optgroup label="⭐ Classic Spatial Workspaces">
+                <option value="spatial_boy_programmer">⭐ Cozy Desk (Boy Dev)</option>
+                <option value="spatial_girl_programmer">⭐ Studio Setup (Girl Dev)</option>
+                <option value="spatial_boy_loft">⭐ Night Loft (Boy Dev)</option>
+                <option value="spatial_girl_sunset">⭐ Sunset Room (Girl Dev)</option>
+              </optgroup>
+              <optgroup label="🌆 Ambient Aesthetics">
+                <option value="ambient_cyberpunk">Cyberpunk Neon Rain</option>
+                <option value="ambient_lofi">Lo-Fi Evening Sunset</option>
+                <option value="unsplash">Unsplash Daily HD</option>
+                <option value="glass">Dark Glassmorphism Mesh</option>
+                <option value="default">Default Clean Theme</option>
+              </optgroup>
+              <optgroup label="Custom Rich Media">
+                <option value="custom">Custom Image / GIF / Video</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="input-field" id="custom-bg-field" style="display: none; margin-top: 10px;">
+            <label class="input-label">Custom Background Media (Image, GIF, or MP4/WebM Video)</label>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 4px;">
+              <button type="button" class="btn btn-secondary" id="custom-bg-upload-btn"
+                style="display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Upload Media</span>
+              </button>
+              <input type="file" id="custom-bg-file-input" accept="image/*,video/mp4,video/webm" style="display: none;">
+
+              <span style="font-size: 12px; color: var(--text-secondary);">or</span>
+
+              <input type="text" class="text-input" id="custom-bg-url-input"
+                placeholder="Paste Image / GIF / MP4 / WebM Video URL..." style="flex: 1; min-width: 150px;">
+
+              <button type="button" class="btn btn-secondary" id="custom-bg-remove-btn"
+                style="display: none; height: 36px; padding: 0 12px; font-size: 13px; color: #d93025; border-color: rgba(217, 48, 37, 0.3);"
+                title="Remove custom background">
+                Remove
+              </button>
+            </div>
+
+            <div id="custom-bg-preview-wrapper"
+              style="display: none; margin-top: 8px; position: relative; width: 100%; height: 90px; border-radius: 8px; overflow: hidden; border: 1px solid var(--input-border); background: #000;">
+              <img id="custom-bg-preview-img" src="" alt="Custom Wallpaper Preview"
+                style="display: none; width: 100%; height: 100%; object-fit: cover;">
+              <video id="custom-bg-preview-video" autoplay loop muted playsinline
+                style="display: none; width: 100%; height: 100%; object-fit: cover;"></video>
+              <div
+                style="position: absolute; bottom: 6px; right: 8px; background: rgba(0,0,0,0.65); color: #ffffff; font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 4px; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); pointer-events: none;">
+                Media Wallpaper Preview</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-label" style="font-size: 15px; margin-bottom: 2px;">Color Contrast, Opacity & Blur
+            Customization</div>
+          <div class="settings-sublabel" style="margin-bottom: 12px;">Fine-tune text colors, tile translucency, and
+            frosted glass blur</div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="input-field">
+              <label class="input-label" for="settings-title-color">Label Text Color</label>
+              <div style="display: flex; gap: 8px; align-items: center; margin-top: 2px;">
+                <input type="color" id="settings-title-color" value="#ffffff"
+                  style="width: 40px; height: 38px; border: 1px solid var(--input-border); border-radius: 6px; cursor: pointer; background: transparent; padding: 2px;">
+                <button type="button" class="btn btn-secondary" id="reset-title-color-btn"
+                  style="height: 38px; font-size: 12px; padding: 0 10px;">Default</button>
+              </div>
+            </div>
+
+            <div class="input-field">
+              <label class="input-label" for="settings-card-bg-color">Tile Background Tint</label>
+              <div style="display: flex; gap: 8px; align-items: center; margin-top: 2px;">
+                <input type="color" id="settings-card-bg-color" value="#12161e"
+                  style="width: 40px; height: 38px; border: 1px solid var(--input-border); border-radius: 6px; cursor: pointer; background: transparent; padding: 2px;">
+                <button type="button" class="btn btn-secondary" id="reset-card-bg-btn"
+                  style="height: 38px; font-size: 12px; padding: 0 10px;">Default</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-field" style="margin-top: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="input-label" for="settings-card-opacity">Tile Opacity</label>
+              <span id="opacity-val-badge"
+                style="font-size: 12px; font-weight: 600; color: var(--btn-primary);">85%</span>
+            </div>
+            <input type="range" id="settings-card-opacity" min="0" max="100" value="85"
+              style="width: 100%; margin-top: 6px; accent-color: var(--btn-primary); cursor: pointer;">
+          </div>
+
+          <div class="input-field" style="margin-top: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="input-label" for="settings-card-blur">Backdrop Frost Blur</label>
+              <span id="blur-val-badge"
+                style="font-size: 12px; font-weight: 600; color: var(--btn-primary);">16px</span>
+            </div>
+            <input type="range" id="settings-card-blur" min="0" max="40" value="16"
+              style="width: 100%; margin-top: 6px; accent-color: var(--btn-primary); cursor: pointer;">
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row" style="justify-content: space-between;">
+            <div>
+              <div class="settings-label">Shortcuts & Documentation Guide</div>
+              <div class="settings-sublabel">Full cheat sheet, Incognito setup status, hotkeys & feature guide</div>
+            </div>
+            <button type="button" class="btn btn-primary" id="open-docs-btn"
+              style="font-size: 13px; height: 36px; padding: 0 14px; white-space: nowrap;">
+              View Guide
+            </button>
+          </div>
+
+          <div
+            style="margin-top: 10px; background: var(--shortcut-tile-hover); padding: 12px; border-radius: 8px; border: 1px solid var(--search-border);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 12px; font-weight: 600; color: var(--text-primary);">Incognito Access
+                Status:</span>
+              <span id="settings-incognito-badge" class="doc-badge incognito-badge-disabled">Checking...</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">
+              • <span class="doc-kbd">Ctrl+Click</span> New Tab &nbsp;|&nbsp;
+              • <span class="doc-kbd">Ctrl+Shift+Click</span> New Window &nbsp;|&nbsp;
+              • <span class="doc-kbd">Alt+Click</span> Incognito Window
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Reset Component Sizes</div>
+              <div class="settings-sublabel">Clear custom sizes for all shortcuts, groups, logo, & search bar</div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="reset-component-sizes-btn"
+              style="color: var(--text-primary);">Reset Sizes</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Developer Shortcuts</div>
+              <div class="settings-sublabel">Reset to 7 curated fullstack developer shortcuts</div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="reset-dev-shortcuts-btn">Reset 7 Shortcuts</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Backup & Restore</div>
+              <div class="settings-sublabel">Export or import layout JSON files</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn btn-secondary" id="export-json-btn">Export</button>
+              <button type="button" class="btn btn-primary" id="import-json-btn">Import</button>
+              <input type="file" id="import-file-input" accept=".json" style="display: none;">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="settings-close-btn">Done</button>
+        </div>
+      </div>
+
+      <!-- 6. Documentation, Shortcuts & Help View -->
+      <div class="side-panel-view hidden" id="view-docs">
+        <div class="doc-container">
+
+          <!-- 1. Incognito Setup Callout Banner -->
+          <div class="doc-card" style="border-color: rgba(11, 87, 208, 0.3); background: rgba(11, 87, 208, 0.04);">
+            <div class="doc-card-header">
+              <div class="doc-card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12h20"></path>
+                  <circle cx="7" cy="16" r="3"></circle>
+                  <circle cx="17" cy="16" r="3"></circle>
+                  <path d="M5 8l2-5h10l2 5"></path>
+                </svg>
+                <span>Incognito Mode Setup</span>
+              </div>
+              <span id="incognito-status-badge" class="doc-badge incognito-badge-disabled">
+                Checking...
+              </span>
+            </div>
+            <div class="doc-desc" id="incognito-status-note">
+              To open shortcuts in Incognito windows via <strong>Alt + Click</strong>, Chrome requires granting one-time
+              Incognito permission.
+            </div>
+
+            <ol class="doc-step-list">
+              <li class="doc-step-item">Click the button below to open Chrome's Extension Details page.</li>
+              <li class="doc-step-item">Scroll down to the <strong>"Allow in Incognito"</strong> setting.</li>
+              <li class="doc-step-item">Toggle the switch <strong>ON</strong>.</li>
+              <li class="doc-step-item">Return to Shortcut+ and launch any shortcut with <strong>Alt + Click</strong> or
+                the 3-dots menu!</li>
+            </ol>
+
+            <div style="display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap;">
+              <button type="button" class="doc-action-btn" id="open-ext-settings-btn"
+                title="Open Chrome Extension Settings">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                  </path>
+                </svg>
+                <span>Open Extension Settings</span>
+              </button>
+              <button type="button" class="btn btn-secondary" id="refresh-incognito-status-btn"
+                style="font-size: 12px; height: 36px; padding: 0 12px;" title="Re-check Incognito Permission">
+                Check Status
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Shortcut Click Launch Cheatsheet -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <div class="doc-card-title">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 3h6v6"></path>
+                  <path d="M10 14L21 3"></path>
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                </svg>
+                <span>Tile Click & Launch Actions</span>
+              </div>
+            </div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>Key / Gesture</th>
+                  <th>Destination</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Standard Click</strong></td>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Left Click</span></td>
+                  <td>Opens in current tab</td>
+                </tr>
+                <tr>
+                  <td><strong>New Tab</strong></td>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Ctrl</span> + <span class="doc-kbd">Click</span> /
+                    <span class="doc-kbd">⌘</span> + <span class="doc-kbd">Click</span>
+                  </td>
+                  <td>Opens in a new browser tab</td>
+                </tr>
+                <tr>
+                  <td><strong>New Window</strong></td>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Ctrl</span> + <span class="doc-kbd">Shift</span> +
+                    <span class="doc-kbd">Click</span>
+                  </td>
+                  <td>Opens in a dedicated new window</td>
+                </tr>
+                <tr>
+                  <td><strong>Incognito Window</strong></td>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Alt</span> + <span class="doc-kbd">Click</span></td>
+                  <td>Opens in private Incognito window</td>
+                </tr>
+                <tr>
+                  <td><strong>Middle Click</strong></td>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Scroll Wheel Click</span></td>
+                  <td>Opens in a new tab</td>
+                </tr>
+                <tr>
+                  <td><strong>Action Menu</strong></td>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">3-Dots Button</span></td>
+                  <td>Menu: Tab, Window, Incognito, Edit, Copy, Delete</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 3. Workspace Hotkeys -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <div class="doc-card-title">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                  <line x1="6" y1="8" x2="6" y2="8"></line>
+                  <line x1="10" y1="8" x2="10" y2="8"></line>
+                  <line x1="14" y1="8" x2="14" y2="8"></line>
+                  <line x1="18" y1="8" x2="18" y2="8"></line>
+                  <line x1="6" y1="12" x2="6" y2="12"></line>
+                  <line x1="18" y1="12" x2="18" y2="12"></line>
+                  <line x1="7" y1="16" x2="17" y2="16"></line>
+                </svg>
+                <span>Global Workspace Hotkeys</span>
+              </div>
+            </div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Hotkey</th>
+                  <th>Function</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">N</span> or <span class="doc-kbd">Alt+N</span></td>
+                  <td>Open Add Shortcut dialog</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">E</span> or <span class="doc-kbd">Alt+E</span></td>
+                  <td>Toggle Edit Layout Mode (Drag, resize & align)</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">G</span> or <span class="doc-kbd">Alt+G</span></td>
+                  <td>Create new Category Group</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">M</span> or <span class="doc-kbd">Alt+M</span></td>
+                  <td>Toggle Multi-Select Mode for batch actions</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">S</span> or <span class="doc-kbd">Ctrl+,</span></td>
+                  <td>Open Settings & Customization drawer</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Ctrl+K</span> or <span class="doc-kbd">/</span></td>
+                  <td>Focus Google Search & live shortcut filter</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">←</span> <span class="doc-kbd">↑</span> <span
+                      class="doc-kbd">→</span> <span class="doc-kbd">↓</span></td>
+                  <td>Navigate shortcuts grid using arrow keys</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Enter</span></td>
+                  <td>Open focused tile (<span class="doc-kbd">Ctrl</span> new tab, <span class="doc-kbd">Alt</span>
+                    incognito)</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Arrow Keys</span> (Edit Mode)</td>
+                  <td>Pixel precision nudging (<span class="doc-kbd">Shift</span> for 10px steps)</td>
+                </tr>
+                <tr>
+                  <td class="doc-kbd-cell"><span class="doc-kbd">Esc</span></td>
+                  <td>Close any open drawer, dropdown, or search history</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 4. Feature Guides -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <div class="doc-card-title">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                <span>Core Features & How to Use</span>
+              </div>
+            </div>
+            <div class="doc-desc" style="display: flex; flex-direction: column; gap: 10px;">
+              <div>
+                <strong style="color: var(--text-primary);">Smart Grid vs. Free Placement:</strong>
+                Switch between an auto-centering responsive grid or freeform spatial placement where you can place
+                tiles, the Google Logo, and the Search Bar anywhere on screen with Photoshop-style alignment guides.
+              </div>
+              <div>
+                <strong style="color: var(--text-primary);">Category Groups:</strong>
+                Organize your shortcuts into folders (Work, Dev, Media). Click the group launch button to open all
+                shortcuts in new tabs, or hold <span class="doc-kbd">Alt</span> to launch all in Incognito!
+              </div>
+              <div>
+                <strong style="color: var(--text-primary);">Workspace Profiles:</strong>
+                Switch between up to 8 distinct workspace profiles (e.g. Work Mode, Personal, Dev) using the header
+                profile switcher. Each profile preserves its own shortcuts, layout, and wallpaper.
+              </div>
+              <div>
+                <strong style="color: var(--text-primary);">Rich Wallpapers & Video:</strong>
+                Choose from curated spatial developer desk setups, cyberpunk/lofi themes, or upload your own custom
+                image, GIF, or looping MP4/WebM video wallpaper.
+              </div>
+              <div>
+                <strong style="color: var(--text-primary);">Shortcut Runner (Offline Arcade Game):</strong>
+                Press the <span class="doc-kbd">🎮</span> header button or hit <span class="doc-kbd">R</span> on your
+                keyboard to play an endless arcade runner. Leap and double-jump over your own saved shortcuts, grab
+                coffee slow-mo and star power-ups, and chase your high score!
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer" style="margin-top: 14px;">
+          <button type="button" class="btn btn-secondary" id="docs-back-settings-btn" style="flex: 1;">← Back to
+            Settings</button>
+          <button type="button" class="btn btn-primary" id="docs-done-btn" style="flex: 1;">Done</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Safe Floating Settings Cog Button (visible when header navigation is turned off) -->
+  <button type="button" class="floating-settings-btn" id="floating-settings-btn" title="Open Settings (S or Ctrl+,)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+      </path>
+    </svg>
+  </button>
+
+  <!-- Floating Bottom-Right Button to Open Official Google Home -->
+  <button type="button" class="switch-ntp-mode-btn" id="switch-ntp-mode-btn"
+    title="Open Google Home (https://www.google.com)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <line x1="10" y1="14" x2="21" y2="3"></line>
+    </svg>
+  </button>
+
+  <!-- Floating Bottom-Left Background Video Controls -->
+  <div id="bg-video-controls" class="bg-video-controls" style="display: none;" role="toolbar"
+    aria-label="Background Video Controls">
+    <button type="button" class="bg-video-btn" id="bg-video-play-btn" title="Pause background video"
+      aria-label="Play or Pause Video">
+      <!-- Pause Icon (default when autoplaying) -->
+      <svg class="icon-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="6" y="4" width="4" height="16" rx="1.5"></rect>
+        <rect x="14" y="4" width="4" height="16" rx="1.5"></rect>
+      </svg>
+      <!-- Play Icon -->
+      <svg class="icon-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+        <polygon points="6 4 19 12 6 20 6 4"></polygon>
+      </svg>
+    </button>
+
+    <button type="button" class="bg-video-btn" id="bg-video-mute-btn" title="Unmute audio"
+      aria-label="Mute or Unmute Video">
+      <!-- Muted Icon (default when muted) -->
+      <svg class="icon-muted" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+      <!-- Unmuted Icon -->
+      <svg class="icon-unmuted" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      </svg>
+    </button>
+
+    <button type="button" class="bg-video-btn" id="bg-video-restart-btn" title="Restart video from beginning"
+      aria-label="Restart Video">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="1 4 1 10 7 10"></polyline>
+        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Floating App Toast -->
+  <div id="app-toast" class="app-toast" role="status" aria-live="polite">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+      stroke-linecap="round" stroke-linejoin="round" style="color: var(--btn-primary); flex-shrink: 0;">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span id="app-toast-text">Action completed</span>
+  </div>
+
+  <!-- Shortcut Runner Arcade Modal -->
+  <div id="game-arcade-modal" class="game-arcade-modal" role="dialog" aria-modal="true"
+    aria-label="Shortcut Runner Game">
+    <div class="arcade-frame">
+      <div class="arcade-header">
+        <div class="arcade-title-group">
+          <span class="arcade-icon-badge">🎮</span>
+          <span class="arcade-title">SHORTCUT RUNNER</span>
+        </div>
+
+        <div class="arcade-scoreboard">
+          <div class="arcade-score-item">
+            <span class="arcade-mode-badge nightmare" id="runner-mode-badge" title="Difficulty Mode (Press R to change)">💀 NIGHTMARE</span>
+          </div>
+          <div class="arcade-score-item">
+            <span class="arcade-score-label">SCORE</span>
+            <span class="arcade-score-val" id="runner-current-score">00000</span>
+          </div>
+          <div class="arcade-score-item">
+            <span class="arcade-score-label">HI</span>
+            <span class="arcade-score-val hi" id="runner-high-score">00000</span>
+          </div>
+        </div>
+
+        <div class="arcade-actions">
+          <button type="button" class="arcade-btn-icon" id="runner-restart-btn-header" title="Restart & Select Difficulty (R)"
+            aria-label="Restart Game and Select Difficulty">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+            </svg>
+          </button>
+          <button type="button" class="arcade-btn-icon" id="runner-skin-btn" title="Change Mascot Skin (C)"
+            aria-label="Change Mascot Skin">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+              <path
+                d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z">
+              </path>
+            </svg>
+          </button>
+          <button type="button" class="arcade-btn-icon" id="runner-mute-btn" title="Mute/Unmute Game (M)"
+            aria-label="Toggle Sound">
+            <svg class="icon-sound" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+            <svg class="icon-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+          </button>
+          <button type="button" class="arcade-btn-icon" id="runner-fullscreen-btn" title="Toggle Fullscreen (F)"
+            aria-label="Toggle Fullscreen">
+            <svg class="icon-expand" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+            <svg class="icon-compress" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+              <polyline points="4 14 10 14 10 20"></polyline>
+              <polyline points="20 10 14 10 14 4"></polyline>
+              <line x1="14" y1="10" x2="21" y2="3"></line>
+              <line x1="10" y1="14" x2="3" y2="21"></line>
+            </svg>
+          </button>
+          <button type="button" class="arcade-btn-icon" id="runner-close-btn" title="Close Game (Esc)"
+            aria-label="Close Arcade Modal">✕</button>
+        </div>
+      </div>
+
+      <div class="arcade-canvas-wrap">
+        <canvas id="runner-canvas" width="760" height="320"></canvas>
+
+        <!-- Difficulty Mode Selection Overlay Screen -->
+        <div class="arcade-overlay-screen" id="runner-difficulty-overlay" style="display: none;">
+          <div class="diff-main-title">SELECT DIFFICULTY</div>
+
+          <div class="diff-cards-grid">
+            <!-- Normal Mode -->
+            <button type="button" class="diff-card-btn diff-card-normal" id="runner-mode-normal-btn" data-mode="normal" aria-label="Select Normal Mode">
+              <div class="diff-card-top">
+                <div class="diff-card-identity">
+                  <span class="diff-card-icon">🛡️</span>
+                  <span class="diff-card-name">NORMAL</span>
+                </div>
+                <kbd class="diff-key-badge">1</kbd>
+              </div>
+              <div class="diff-card-stat">Speed up to <strong>12.0</strong></div>
+              <div class="diff-card-desc">Relaxed pace • Wider runways</div>
+            </button>
+
+            <!-- Nightmare Mode (Scary Mode) -->
+            <button type="button" class="diff-card-btn diff-card-nightmare" id="runner-mode-nightmare-btn" data-mode="nightmare" aria-label="Select Nightmare Mode">
+              <div class="diff-card-top">
+                <div class="diff-card-identity">
+                  <span class="diff-card-icon">💀</span>
+                  <span class="diff-card-name scary-text">NIGHTMARE</span>
+                </div>
+                <kbd class="diff-key-badge scary">2</kbd>
+              </div>
+              <div class="diff-card-stat">Speed up to <strong>20.0</strong></div>
+              <div class="diff-card-desc scary-sub">Extreme velocity • Tight 300px gaps</div>
+            </button>
+          </div>
+
+          <div class="diff-footer-hint">
+            Press <kbd class="arcade-kbd">1</kbd> or <kbd class="arcade-kbd">2</kbd> to launch
+          </div>
+        </div>
+
+        <!-- Game Over Overlay Screen -->
+        <div class="arcade-overlay-screen" id="runner-game-over-overlay" style="display: none;">
+          <div class="game-over-banner">GAME OVER</div>
+          <div class="game-over-stats">
+            <div class="game-stat-box">
+              <div class="game-stat-label">Final Score</div>
+              <div class="game-stat-num" id="runner-final-score">0</div>
+            </div>
+            <div class="game-stat-box">
+              <div class="game-stat-label">High Score</div>
+              <div class="game-stat-num hi" id="runner-best-score">0</div>
+            </div>
+          </div>
+          <div class="game-over-actions-group">
+            <button type="button" class="arcade-restart-btn" id="runner-restart-btn">
+              <span>Play Again</span>
+            </button>
+            <button type="button" class="arcade-mode-select-btn" id="runner-change-mode-btn" title="Change Difficulty (R)">
+              <span>Change Mode (R)</span>
+            </button>
+          </div>
+          <div class="arcade-hint-restart">Press SPACE to retry • Press R to change difficulty</div>
+        </div>
+
+        <!-- Pause Overlay Screen -->
+        <div class="arcade-overlay-screen" id="runner-pause-overlay" style="display: none;">
+          <div class="arcade-pause-banner">PAUSED</div>
+          <div class="arcade-hint-restart">Press P to resume running • Press R for difficulty</div>
+        </div>
+      </div>
+
+      <div class="arcade-footer">
+        <div class="arcade-controls-list">
+          <span class="arcade-key-item"><kbd class="arcade-kbd">Space</kbd> / <kbd class="arcade-kbd">↑</kbd> Jump &
+            Double Jump</span>
+          <span class="arcade-key-item"><kbd class="arcade-kbd">↓</kbd> Slide / Duck</span>
+          <span class="arcade-key-item"><kbd class="arcade-kbd">R</kbd> Difficulty / Restart</span>
+          <span class="arcade-key-item"><kbd class="arcade-kbd">C</kbd> Skin</span>
+          <span class="arcade-key-item"><kbd class="arcade-kbd">P</kbd> Pause</span>
+          <span class="arcade-key-item"><kbd class="arcade-kbd">F</kbd> Fullscreen</span>
+          <span class="arcade-key-item"><kbd class="arcade-kbd">Esc</kbd> Exit</span>
+        </div>
+        <div class="arcade-tagline">Dodging your bookmarks & distraction sites</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/storage.js"></script>
+  <script src="scripts/favicon.js"></script>
+  <script src="scripts/drag.js"></script>
+  <script src="scripts/search.js"></script>
+  <script src="scripts/keyboard.js"></script>
+  <script src="scripts/backup.js"></script>
+  <script src="scripts/theme.js"></script>
+  <script src="scripts/shortcuts.js"></script>
+  <script src="scripts/modal.js"></script>
+  <script src="scripts/runner.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+
+</html>

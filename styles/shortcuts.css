@@ -1,0 +1,694 @@
+/* shortcuts.css - Google-style Horizontal Flex Grid Screen-Wide Layout & High-Contrast Cards */
+
+.shortcuts-container {
+  order: var(--shortcuts-order, 3);
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: min-height 0.3s ease;
+
+  /* Fixed height & smooth scroll for 50+ shortcuts */
+  max-height: max(380px, calc(100vh - 230px));
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 36px;
+  scroll-behavior: smooth;
+}
+
+/* Custom Google-style Scrollbar */
+.shortcuts-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.shortcuts-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shortcuts-container::-webkit-scrollbar-thumb {
+  background-color: rgba(95, 99, 104, 0.35);
+  border-radius: 4px;
+}
+
+.shortcuts-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(95, 99, 104, 0.6);
+}
+
+/* Grid & Free Layout Mode - Both Enforce Screen-Wide Horizontal Flex Row Wrapping */
+.shortcuts-grid.mode-grid,
+.shortcuts-grid.mode-free {
+  display: flex;
+  padding: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1540px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  gap: 16px;
+}
+
+/* Individual Shortcut Card */
+.shortcut-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  height: 112px;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 8px 4px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--shortcut-title-color);
+  background-color: transparent;
+  transition: background-color 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1), opacity 0.15s ease;
+  cursor: pointer;
+  touch-action: none;
+  flex-shrink: 0;
+
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.shortcut-card *:not(.shortcut-menu-btn):not(.resize-handle):not(.shortcut-select-checkbox) {
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+.shortcut-card:hover {
+  background-color: var(--shortcut-tile-hover);
+  transform: translateY(-2px);
+}
+
+/* Free Placement Card Styling */
+.shortcut-card-free {
+  z-index: 10;
+  background-color: var(--shortcut-card-bg);
+  border: 1px solid var(--shortcut-card-border);
+  box-shadow: var(--shortcut-card-shadow);
+  backdrop-filter: blur(var(--shortcut-blur, 16px));
+  -webkit-backdrop-filter: blur(var(--shortcut-blur, 16px));
+}
+
+.shortcut-card-free:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+/* Icon Wrapper Adaptive Scaling */
+.shortcut-icon-wrapper {
+  position: relative;
+  width: min(48px, calc(100% - 6px));
+  height: min(48px, calc(100% - 6px));
+  max-width: 48px;
+  max-height: 48px;
+  border-radius: 50%;
+  background-color: var(--shortcut-icon-bg);
+  border: 1px solid var(--shortcut-icon-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+  flex-shrink: 0;
+}
+
+.shortcut-card:hover .shortcut-icon-wrapper {
+  transform: scale(1.06);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.shortcut-icon-img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+.shortcut-icon-letter {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Title Typography & Truncation */
+.shortcut-title {
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  text-align: center;
+  width: calc(100% - 8px);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+  color: var(--shortcut-title-color, inherit);
+  text-shadow: var(--shortcut-title-shadow, none);
+}
+
+/* Compact Tile Mode for sizes under 68px (like 40x40, 48x48) */
+.shortcut-card.is-compact-tile {
+  padding: 2px !important;
+  border-radius: 10px;
+}
+
+.shortcut-card.is-compact-tile .shortcut-icon-wrapper {
+  width: calc(100% - 4px) !important;
+  height: calc(100% - 4px) !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  border-radius: 8px !important;
+}
+
+.shortcut-card.is-compact-tile .shortcut-title {
+  display: none !important;
+}
+
+.shortcut-card.is-compact-tile .shortcut-icon-img {
+  width: 70% !important;
+  height: 70% !important;
+}
+
+.shortcut-card.is-compact-tile .shortcut-menu-btn {
+  width: 20px;
+  height: 20px;
+  top: 2px;
+  right: 2px;
+}
+
+.shortcut-card.is-compact-tile .shortcut-menu-btn svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Edit Mode Tile Styling */
+body.edit-mode-active .shortcut-card:not(.shortcut-card-add) {
+  animation: gentle-wiggle 0.4s infinite alternate ease-in-out;
+  box-shadow: 0 0 0 2px var(--input-focus);
+}
+
+/* Selected Tile in Edit Mode */
+body.edit-mode-active .shortcut-card.is-selected {
+  animation: none !important;
+  box-shadow: 0 0 0 3px var(--btn-primary), 0 6px 20px rgba(11, 87, 208, 0.35) !important;
+  background-color: rgba(11, 87, 208, 0.12) !important;
+  transform: scale(1.05) !important;
+  z-index: 30 !important;
+}
+
+/* Photoshop-Style Marquee Box Selection */
+.marquee-selection-box {
+  position: fixed;
+  border: 1.5px dashed #0084ff;
+  background-color: rgba(0, 132, 255, 0.14);
+  box-shadow: 0 0 12px rgba(0, 132, 255, 0.18);
+  pointer-events: none;
+  z-index: 99999;
+  border-radius: 2px;
+}
+
+body.edit-mode-active .shortcut-card-add {
+  opacity: 0.95;
+  border-style: dashed;
+}
+
+@keyframes gentle-wiggle {
+  0% {
+    transform: rotate(-0.8deg);
+  }
+
+  100% {
+    transform: rotate(0.8deg);
+  }
+}
+
+/* Three-dot Action Menu Button */
+.shortcut-menu-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--search-bg);
+  border: 1px solid var(--search-border);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.15s ease, transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  z-index: 2;
+  pointer-events: auto !important;
+}
+
+.shortcut-card:hover .shortcut-menu-btn,
+body.edit-mode-active .shortcut-menu-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.shortcut-menu-btn:hover {
+  background-color: var(--shortcut-tile-hover);
+  color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+.shortcut-card.is-dragging {
+  opacity: 0.25;
+}
+
+.shortcut-card.is-multidrag-active {
+  transition: none !important;
+  cursor: grabbing !important;
+  box-shadow: 0 0 0 3px var(--btn-primary), 0 12px 32px rgba(0, 0, 0, 0.35) !important;
+  opacity: 0.95 !important;
+  z-index: 9999 !important;
+}
+
+/* Floating Drag Ghost Element */
+.drag-ghost {
+  position: fixed !important;
+  z-index: 1000 !important;
+  pointer-events: none !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3) !important;
+  background-color: var(--modal-bg) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--search-border) !important;
+  transform: scale(1.06) !important;
+  opacity: 0.95 !important;
+  transition: transform 0.05s linear !important;
+}
+
+/* Add Shortcut Tile */
+.shortcut-card-add {
+  border: 1.5px dashed var(--input-border);
+  background-color: rgba(0, 0, 0, 0.02);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.shortcut-card-add:hover {
+  border-color: var(--btn-primary);
+  background-color: rgba(11, 87, 208, 0.06);
+  color: var(--btn-primary);
+  transform: translateY(-2px);
+}
+
+.shortcut-card-add .shortcut-icon-wrapper {
+  background-color: transparent;
+  border: 1.5px solid var(--input-border);
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.shortcut-card-add:hover .shortcut-icon-wrapper {
+  border-color: var(--btn-primary);
+  background-color: var(--shortcut-tile-hover);
+}
+
+.shortcut-card-add .shortcut-icon-wrapper svg {
+  color: inherit;
+  width: 22px;
+  height: 22px;
+}
+
+.shortcut-card-add .shortcut-title {
+  font-weight: 500;
+  color: inherit;
+}
+
+/* Multi-Select Overlay & Checkbox styling */
+.shortcut-select-overlay {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+body.multiselect-active .shortcut-select-overlay {
+  display: flex;
+}
+
+body.multiselect-active .shortcut-card-add {
+  display: none !important;
+}
+
+.shortcut-select-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--btn-primary);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.shortcut-card.is-selected {
+  box-shadow: 0 0 0 2.5px var(--btn-primary) !important;
+  background-color: rgba(11, 87, 208, 0.08) !important;
+}
+
+/* Floating Multi-Select Action Bar */
+.multiselect-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--modal-bg);
+  border: 1px solid var(--search-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), opacity 0.2s ease;
+}
+
+.multiselect-bar.active {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.multiselect-info {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.multiselect-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-btn);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Compact Pill View Styling */
+.shortcuts-grid.tile-style-pill .shortcut-card {
+  width: auto;
+  max-width: 180px;
+  height: 44px;
+  flex-direction: row;
+  padding: 0 12px;
+  border-radius: 22px;
+  border: 1px solid var(--search-border);
+  background-color: var(--shortcut-card-bg);
+  backdrop-filter: blur(var(--shortcut-blur, 16px));
+  -webkit-backdrop-filter: blur(var(--shortcut-blur, 16px));
+}
+
+/* Dynamic Custom Tile Background Tint in Smart Grid Mode */
+html.has-custom-card-bg .shortcuts-grid.mode-grid .shortcut-card {
+  background-color: var(--shortcut-card-bg) !important;
+  border: 1px solid var(--shortcut-card-border, rgba(255, 255, 255, 0.12));
+  backdrop-filter: blur(var(--shortcut-blur, 16px));
+  -webkit-backdrop-filter: blur(var(--shortcut-blur, 16px));
+  box-shadow: var(--shortcut-card-shadow);
+}
+
+.shortcuts-grid.tile-style-pill .shortcut-icon-wrapper {
+  width: 26px;
+  height: 26px;
+  margin-bottom: 0;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.shortcuts-grid.tile-style-pill .shortcut-icon-img {
+  width: 16px;
+  height: 16px;
+}
+
+.shortcuts-grid.tile-style-pill .shortcut-title {
+  text-align: left;
+  width: auto;
+  flex: 1;
+}
+
+/* Minimal Text List View Styling */
+.shortcuts-grid.tile-style-list .shortcut-card {
+  width: auto;
+  height: 36px;
+  flex-direction: row;
+  padding: 0 10px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.shortcuts-grid.tile-style-list .shortcut-card:hover {
+  background-color: var(--shortcut-tile-hover);
+}
+
+.shortcuts-grid.tile-style-list .shortcut-icon-wrapper {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 0;
+  margin-right: 8px;
+  box-shadow: none;
+  background-color: transparent;
+  border: none;
+}
+
+.shortcuts-grid.tile-style-list .shortcut-icon-img {
+  width: 16px;
+  height: 16px;
+}
+
+.shortcuts-grid.tile-style-list .shortcut-title {
+  text-align: left;
+  width: auto;
+  flex: 1;
+  font-size: 13px;
+}
+
+/* Circular Minimalist Icon-Only View Styling (No Text, Round Floating Icons) */
+.shortcuts-grid.tile-style-circular {
+  gap: 16px;
+}
+
+.shortcuts-grid.tile-style-circular .shortcut-card {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--shortcut-card-bg);
+  border: 1px solid var(--shortcut-card-border);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.shortcuts-grid.tile-style-circular .shortcut-card:hover {
+  transform: scale(1.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 0 0 2px var(--btn-primary);
+  background-color: var(--shortcut-tile-hover);
+}
+
+.shortcuts-grid.tile-style-circular .shortcut-icon-wrapper {
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  max-width: 48px;
+  max-height: 48px;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.shortcuts-grid.tile-style-circular .shortcut-icon-img {
+  width: 65%;
+  height: 65%;
+}
+
+.shortcuts-grid.tile-style-circular .shortcut-icon-letter {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.shortcuts-grid.tile-style-circular .shortcut-title {
+  display: none !important;
+}
+
+.shortcuts-grid.tile-style-circular .shortcut-card-add {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border-style: dashed;
+}
+
+.shortcuts-grid.tile-style-circular .shortcut-card-add .shortcut-icon-wrapper {
+  margin: 0;
+}
+
+/* Photoshop-Style Nudge Distance Tooltip */
+.nudge-tooltip {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Google Sans', 'Roboto', system-ui, sans-serif;
+  padding: 3px 10px;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 1000;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  animation: nudge-fade 0.8s ease forwards;
+}
+
+@keyframes nudge-fade {
+  0%   { opacity: 1; transform: translateY(0); }
+  70%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
+/* Shortcut Tile Action Dropdown Menu */
+.shortcut-action-dropdown {
+  position: fixed;
+  z-index: 10000;
+  min-width: 220px;
+  background: var(--modal-bg, #ffffff);
+  border: 1px solid var(--modal-border, rgba(0, 0, 0, 0.12));
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: dropdown-pop 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropdown-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.shortcut-action-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary, #202124);
+  font-family: 'Google Sans', 'Roboto', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.shortcut-action-dropdown .dropdown-item svg {
+  flex-shrink: 0;
+  color: var(--text-secondary, #5f6368);
+  transition: color 0.15s ease;
+}
+
+.shortcut-action-dropdown .dropdown-item:hover {
+  background-color: var(--shortcut-tile-hover, rgba(0, 0, 0, 0.06));
+}
+
+.shortcut-action-dropdown .dropdown-item:hover svg {
+  color: var(--btn-primary, #1a73e8);
+}
+
+.shortcut-action-dropdown .dropdown-item span {
+  flex: 1;
+}
+
+.shortcut-action-dropdown .dropdown-kbd {
+  font-size: 10.5px;
+  font-family: inherit;
+  color: var(--text-secondary, #70757a);
+  background: var(--shortcut-icon-bg, rgba(0, 0, 0, 0.05));
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--input-border, rgba(0, 0, 0, 0.08));
+  font-weight: 500;
+}
+
+.shortcut-action-dropdown .dropdown-divider {
+  height: 1px;
+  background: var(--modal-border, rgba(0, 0, 0, 0.08));
+  margin: 4px 0;
+}
+
+.shortcut-action-dropdown .dropdown-item-danger {
+  color: #ea4335;
+}
+
+.shortcut-action-dropdown .dropdown-item-danger svg {
+  color: #ea4335;
+}
+
+.shortcut-action-dropdown .dropdown-item-danger:hover {
+  background-color: rgba(234, 67, 53, 0.1);
+  color: #d93025;
+}
+
+.shortcut-action-dropdown .dropdown-item-danger:hover svg {
+  color: #d93025;
+}

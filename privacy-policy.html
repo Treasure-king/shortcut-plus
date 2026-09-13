@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Shortcut+ Chrome Extension</title>
+  <link rel="icon" type="image/png" href="assets/icons/icon48.png">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --link: #60a5fa;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8fafc;
+        --card-bg: #ffffff;
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --border: #e2e8f0;
+        --accent: #0284c7;
+        --accent-glow: rgba(2, 132, 199, 0.1);
+        --link: #2563eb;
+      }
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 48px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header img {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+    }
+    .header-text h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .header-text .date {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    ul, ol {
+      margin-bottom: 20px;
+      padding-left: 24px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    strong {
+      color: var(--text);
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    hr {
+      border: 0;
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    code {
+      font-family: monospace;
+      font-size: 0.9em;
+      background: rgba(125, 125, 125, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .footer {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="header">
+      <img src="assets/icons/icon128.png" alt="Shortcut+ Logo">
+      <div class="header-text">
+        <h1>Shortcut+ Privacy Policy</h1>
+        <div class="date">Last Updated: September 13, 2026</div>
+      </div>
+    </div>
+
+    <div class="badge">100% LOCAL &amp; PRIVACY-FIRST</div>
+
+    <p>Shortcut+ ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy outlines how the Shortcut+ Chrome Extension operates and details our strict data protection principles.</p>
+
+    <hr>
+
+    <h2>1. Core Principle: Zero Personal Data Collection</h2>
+    <p>Shortcut+ is engineered as a <strong>100% local, privacy-first productivity tool</strong>:</p>
+    <ul>
+      <li><strong>We do NOT collect, store, transmit, sell, or rent any personal data.</strong></li>
+      <li><strong>We do NOT track your browsing history, analytics, keystrokes, or unique personal identifiers.</strong></li>
+      <li>All shortcuts, custom layouts, profiles, and visual preferences remain strictly on your local device.</li>
+    </ul>
+
+    <hr>
+
+    <h2>2. Information Handled Locally</h2>
+    <p>Shortcut+ utilizes standard browser APIs exclusively on your device:</p>
+    <ul>
+      <li><strong>Local Storage (<code>chrome.storage.local</code> &amp; <code>unlimitedStorage</code>):</strong> 
+      Shortcut+ saves your custom shortcuts, free-form coordinates, active workspaces, custom wallpaper choices, and local search history on your machine. The <code>unlimitedStorage</code> permission ensures your custom themes and extensive shortcut layouts can be saved locally without hitting browser quota restrictions. This data never leaves your computer and is inaccessible to us or any third party.</li>
+    </ul>
+
+    <hr>
+
+    <h2>3. Network Requests &amp; Third-Party Services</h2>
+    <p>Shortcut+ does not operate any remote user databases or backend servers. It performs only the following direct network requests to provide user-requested features:</p>
+    <ol>
+      <li><strong>Google Search Suggestions (<code>https://suggestqueries.google.com/*</code>):</strong>
+      When typing into the search bar, queries are sent directly from your browser to Google's public autocomplete API to display real-time suggestions. Shortcut+ does not record, log, or proxy these queries.</li>
+      <li><strong>Favicon Retrieval (<code>https://www.google.com/s2/favicons</code>):</strong>
+      When you create a shortcut, the extension requests the website's public icon from Google's public favicon service. If unavailable, an offline letter avatar is generated locally.</li>
+      <li><strong>Daily Wallpaper (<code>https://images.unsplash.com/*</code>):</strong>
+      If you explicitly choose the "Unsplash Daily" wallpaper mode, the extension loads a curated daily wallpaper directly from Unsplash.</li>
+    </ol>
+
+    <hr>
+
+    <h2>4. Chrome Web Store Compliance &amp; Limited Use Disclosure</h2>
+    <p>In compliance with the Google Chrome Web Store Developer Program Policies:</p>
+    <ul>
+      <li><strong>No Sale of Data:</strong> We never sell, transfer, or license user data or search queries to third parties, data brokers, or advertising networks.</li>
+      <li><strong>Single Purpose:</strong> All data handled by Shortcut+ is used solely to provide and improve its core single purpose: a customizable New Tab visual workspace.</li>
+      <li><strong>No Credit/Lending Evaluation:</strong> User data is never used or transferred to determine creditworthiness or for lending purposes.</li>
+    </ul>
+
+    <hr>
+
+    <h2>5. Data Control &amp; Deletion</h2>
+    <ul>
+      <li><strong>Full User Ownership:</strong> You have complete control over all data stored by Shortcut+.</li>
+      <li><strong>Instant Removal:</strong> You can edit or delete individual shortcuts, clear search history, or reset workspaces at any time.</li>
+      <li><strong>Complete Uninstallation:</strong> Uninstalling the Shortcut+ extension from Chrome permanently removes all locally stored extension data immediately.</li>
+    </ul>
+
+    <hr>
+
+    <h2>6. Contact Us</h2>
+    <p>If you have questions, feedback, or need support regarding this Privacy Policy, please contact us:</p>
+    <ul>
+      <li><strong>GitHub Repository:</strong> <a href="https://github.com/Treasure-king/shortcut-plus" target="_blank" rel="noopener">https://github.com/Treasure-king/shortcut-plus</a></li>
+      <li><strong>Issue Tracker:</strong> <a href="https://github.com/Treasure-king/shortcut-plus/issues" target="_blank" rel="noopener">https://github.com/Treasure-king/shortcut-plus/issues</a></li>
+    </ul>
+
+    <div class="footer">
+      &copy; 2026 Shortcut+ Chrome Extension. All rights reserved.
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Shortcut+ - Unlimited New Tab Shortcuts",
+  "version": "1.0.0",
+  "description": "Customizable New Tab shortcuts with free placement, drag & drop, smart alignment guides, and workspaces.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "incognito": "spanning",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "https://suggestqueries.google.com/*"
+  ],
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}

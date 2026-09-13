@@ -1,0 +1,215 @@
+/* main.css - Core Design Tokens, Reset & Typography */
+
+:root {
+  /* Google Material 3 High-Contrast Light Palette */
+  --bg-color: #f8f9fa;
+  --text-primary: #1f1f1f;
+  --text-secondary: #444746;
+  --text-tertiary: #747775;
+
+  --search-bg: #ffffff;
+  --search-border: #dfe1e5;
+  --search-shadow: 0 1px 6px rgba(32, 33, 36, 0.18), 0 1px 2px rgba(32, 33, 36, 0.08);
+  --search-hover-shadow: 0 2px 10px rgba(32, 33, 36, 0.25), 0 1px 3px rgba(32, 33, 36, 0.15);
+
+  --shortcut-tile-hover: rgba(32, 33, 36, 0.06);
+  --shortcut-card-bg: #ffffff;
+  --shortcut-card-border: rgba(0, 0, 0, 0.08);
+  --shortcut-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shortcut-icon-bg: #f0f4f9;
+  --shortcut-icon-border: rgba(0, 0, 0, 0.06);
+  --shortcut-title-color: #1f1f1f;
+
+  --header-btn-bg: #ffffff;
+  --header-btn-border: #dadce0;
+  --header-btn-color: #1f1f1f;
+  --header-btn-hover: #f1f3f4;
+
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(32, 33, 36, 0.6);
+  --modal-shadow: 0 12px 28px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --input-border: #c4c7c5;
+  --input-focus: #0b57d0;
+
+  --btn-primary: #0b57d0;
+  --btn-primary-hover: #0842a0;
+  --btn-secondary-text: #0b57d0;
+
+  --radius-search: 24px;
+  --radius-shortcut-icon: 50%;
+  --radius-modal: 16px;
+  --radius-btn: 8px;
+
+  --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* System Dark Mode Theme Fallback */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #1a1a1e;
+    --text-primary: #f2f2f2;
+    --text-secondary: #c4c7c5;
+    --text-tertiary: #8e918f;
+
+    --search-bg: #28292c;
+    --search-border: rgba(255, 255, 255, 0.12);
+    --search-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    --search-hover-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+    --shortcut-tile-hover: rgba(255, 255, 255, 0.08);
+    --shortcut-card-bg: rgba(40, 41, 44, 0.85);
+    --shortcut-card-border: rgba(255, 255, 255, 0.1);
+    --shortcut-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    --shortcut-icon-bg: #303134;
+    --shortcut-icon-border: rgba(255, 255, 255, 0.08);
+    --shortcut-title-color: #f2f2f2;
+
+    --header-btn-bg: #28292c;
+    --header-btn-border: rgba(255, 255, 255, 0.12);
+    --header-btn-color: #f2f2f2;
+    --header-btn-hover: #35363a;
+
+    --modal-bg: #28292c;
+    --modal-overlay: rgba(0, 0, 0, 0.75);
+    --modal-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+
+    --input-border: #5f6368;
+    --input-focus: #a8c7fa;
+
+    --btn-primary: #a8c7fa;
+    --btn-primary-hover: #c2e7ff;
+    --btn-secondary-text: #a8c7fa;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+
+input {
+  font-family: inherit;
+}
+
+/* ==========================================================================
+   Ultra-High Precision Smart Alignment Rays & SVG Layer
+   ========================================================================== */
+.smart-guides-svg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: visible;
+}
+
+/* Magnetic Snap Pulse Animations */
+@keyframes snapLinePulse {
+  0% {
+    stroke-width: 3.5px;
+    opacity: 1;
+    filter: drop-shadow(0 0 10px currentColor);
+  }
+
+  50% {
+    stroke-width: 2px;
+    opacity: 0.95;
+    filter: drop-shadow(0 0 6px currentColor);
+  }
+
+  100% {
+    stroke-width: 1.5px;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+}
+
+.snap-pulse-line {
+  animation: snapLinePulse 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes snapBadgePop {
+  0% {
+    transform: scale(1.22);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+  }
+
+  60% {
+    transform: scale(0.96);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.snap-badge-pulse {
+  transform-origin: center;
+  animation: snapBadgePop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Dynamic Resizing Handle & Cursor Styling */
+.resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+  cursor: se-resize !important;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: auto !important;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.shortcut-group-section:hover .resize-handle,
+#google-logo-section:hover .resize-handle,
+#search-bar-section:hover .resize-handle {
+  opacity: 0.85;
+}
+
+.resize-handle:hover {
+  opacity: 1 !important;
+  transform: scale(1.25);
+}
+
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 9px;
+  height: 9px;
+  border-right: 2.5px solid var(--btn-primary, #0b57d0);
+  border-bottom: 2.5px solid var(--btn-primary, #0b57d0);
+  border-radius: 1px;
+}

@@ -1,0 +1,630 @@
+/* runner.css - "Shortcut Runner" Arcade Modal & Canvas Styling */
+
+#game-arcade-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 15, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#game-arcade-modal.active {
+  display: flex;
+  opacity: 1;
+}
+
+.arcade-frame {
+  width: 790px;
+  max-width: 95vw;
+  background: rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  border-radius: 18px;
+  box-shadow: 
+    0 24px 70px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(0, 242, 254, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: arcadeScaleIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes arcadeScaleIn {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Arcade Header Bar */
+.arcade-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(10, 15, 30, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.arcade-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.arcade-icon-badge {
+  font-size: 18px;
+  filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.6));
+}
+
+.arcade-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #38ef7d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.arcade-scoreboard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Courier New', Courier, monospace, monospace;
+}
+
+.arcade-score-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.arcade-score-label {
+  color: #94a3b8;
+  letter-spacing: 1px;
+}
+
+.arcade-score-val {
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  color: #f8fafc;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.arcade-score-val.hi {
+  color: #ffd200;
+  border-color: rgba(255, 210, 0, 0.3);
+  text-shadow: 0 0 8px rgba(255, 210, 0, 0.4);
+}
+
+.arcade-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arcade-btn-icon {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.arcade-btn-icon:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+#runner-skin-btn:hover {
+  color: #ffd200;
+  border-color: rgba(255, 210, 0, 0.4);
+  box-shadow: 0 0 10px rgba(255, 210, 0, 0.25);
+}
+
+/* Canvas Area */
+.arcade-canvas-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 760 / 320;
+  background: #0a0d14;
+  overflow: hidden;
+}
+
+#runner-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Canvas Overlays (Game Over / Pause) */
+.arcade-overlay-screen {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 15, 30, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 10;
+  animation: fadeIn 0.2s ease;
+}
+
+.game-over-banner {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ff007f;
+  text-shadow: 0 0 16px rgba(255, 0, 127, 0.6);
+  text-transform: uppercase;
+}
+
+.game-over-stats {
+  display: flex;
+  gap: 20px;
+  margin: 4px 0 10px 0;
+}
+
+.game-stat-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 18px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.game-stat-label {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.game-stat-num {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f8fafc;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.game-stat-num.hi {
+  color: #ffd200;
+}
+
+.arcade-restart-btn {
+  background: linear-gradient(135deg, #0b57d0 0%, #00f2fe 100%);
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 10px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 242, 254, 0.3);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arcade-restart-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.45);
+}
+
+.arcade-hint-restart {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+#game-arcade-modal.fullscreen {
+  padding: 0;
+}
+
+#game-arcade-modal.fullscreen .arcade-frame {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
+#game-arcade-modal.fullscreen .arcade-canvas-wrap {
+  flex: 1;
+  height: calc(100vh - 94px);
+  aspect-ratio: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #060911;
+  padding: 12px 24px;
+}
+
+#game-arcade-modal.fullscreen #runner-canvas {
+  width: min(94vw, calc(78vh * (760 / 320)));
+  height: min(78vh, calc(94vw * (320 / 760)));
+  max-width: 96vw;
+  max-height: calc(100vh - 104px);
+  aspect-ratio: 760 / 320;
+  display: block;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(56, 189, 248, 0.15);
+}
+
+.arcade-overlay-screen#runner-pause-overlay {
+  background: rgba(10, 15, 30, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.arcade-overlay-screen#runner-pause-overlay .arcade-pause-banner {
+  font-size: 24px;
+  font-weight: 800;
+  color: #00f2fe;
+  text-shadow: 0 0 14px rgba(0, 242, 254, 0.5);
+  letter-spacing: 2px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  padding: 12px 36px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.25);
+}
+
+.arcade-overlay-screen#runner-pause-overlay .arcade-hint-restart {
+  background: rgba(15, 23, 42, 0.85);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+/* Footer Controls Bar */
+.arcade-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(10, 15, 30, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.arcade-controls-list {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.arcade-key-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.arcade-kbd {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #e2e8f0;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.arcade-tagline {
+  font-size: 11px;
+  color: #64748b;
+  font-style: italic;
+}
+
+@media (max-width: 680px) {
+  .arcade-controls-list {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Difficulty Mode Badges & Scary Nightmare Theme
+   ========================================================================== */
+.arcade-mode-badge {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.arcade-mode-badge.normal {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.arcade-mode-badge.normal:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.arcade-mode-badge.nightmare {
+  color: #ff3366;
+  background: rgba(255, 51, 102, 0.12);
+  border: 1px solid rgba(255, 51, 102, 0.35);
+  animation: scaryBadgePulse 2.2s infinite ease-in-out;
+}
+
+.arcade-mode-badge.nightmare:hover {
+  background: rgba(255, 51, 102, 0.22);
+  border-color: rgba(255, 51, 102, 0.6);
+  transform: translateY(-1px);
+}
+
+@keyframes scaryBadgePulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 51, 102, 0.2);
+    border-color: rgba(255, 51, 102, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 51, 102, 0.45);
+    border-color: rgba(255, 51, 102, 0.7);
+  }
+}
+
+/* Nightmare Frame Subtle Glow */
+#game-arcade-modal.mode-nightmare .arcade-frame {
+  border-color: rgba(255, 51, 102, 0.4);
+  box-shadow: 
+    0 24px 70px rgba(0, 0, 0, 0.92),
+    0 0 35px rgba(255, 51, 102, 0.15),
+    inset 0 1px 0 rgba(255, 100, 140, 0.15);
+}
+
+#game-arcade-modal.mode-nightmare .arcade-title {
+  background: linear-gradient(135deg, #ff3366 0%, #ff0055 45%, #ffd200 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   Difficulty Selection Overlay Screen (Sleek, Minimal & Professional)
+   ========================================================================== */
+#runner-difficulty-overlay {
+  z-index: 25;
+  padding: 20px;
+  background: rgba(6, 10, 18, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.diff-main-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.diff-cards-grid {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.diff-card-btn {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  color: #e2e8f0;
+}
+
+.diff-card-btn:focus-visible {
+  outline: none;
+}
+
+.diff-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.diff-card-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.diff-card-icon {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.diff-card-name {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+.diff-key-badge {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  line-height: 1.2;
+}
+
+.diff-card-stat {
+  font-size: 12px;
+  color: #cbd5e1;
+  margin-bottom: 3px;
+}
+
+.diff-card-stat strong {
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.diff-card-desc {
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.3;
+}
+
+/* Normal Mode Card */
+.diff-card-normal {
+  border-color: rgba(56, 189, 248, 0.22);
+}
+
+.diff-card-normal .diff-card-name {
+  color: #38bdf8;
+}
+
+.diff-card-normal:hover,
+.diff-card-normal:focus-visible {
+  border-color: #38bdf8;
+  background: rgba(15, 23, 42, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.18);
+}
+
+.diff-card-normal:hover .diff-key-badge,
+.diff-card-normal:focus-visible .diff-key-badge {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+/* Nightmare Mode Card */
+.diff-card-nightmare {
+  border-color: rgba(255, 51, 102, 0.3);
+  background: linear-gradient(180deg, rgba(26, 14, 24, 0.75) 0%, rgba(15, 10, 18, 0.88) 100%);
+}
+
+.diff-card-nightmare .diff-card-name.scary-text {
+  color: #ff3366;
+}
+
+.diff-card-nightmare .diff-card-desc.scary-sub {
+  color: #f43f5e;
+  opacity: 0.85;
+}
+
+.diff-card-nightmare:hover,
+.diff-card-nightmare:focus-visible {
+  border-color: #ff3366;
+  background: linear-gradient(180deg, rgba(32, 16, 28, 0.92) 0%, rgba(18, 10, 20, 0.96) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 22px rgba(255, 51, 102, 0.25);
+}
+
+.diff-card-nightmare:hover .diff-key-badge.scary,
+.diff-card-nightmare:focus-visible .diff-key-badge.scary {
+  background: rgba(255, 51, 102, 0.2);
+  border-color: rgba(255, 51, 102, 0.45);
+  color: #ff3366;
+}
+
+.diff-footer-hint {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Game Over Actions Group */
+.game-over-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arcade-mode-select-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f1f5f9;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.arcade-mode-select-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .diff-cards-grid {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+

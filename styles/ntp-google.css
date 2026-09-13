@@ -1,0 +1,872 @@
+/* ntp-google.css - Google NTP Replica Styling & Screen-Wide Layout */
+
+.ntp-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 10px;
+  height: 64px;
+  box-sizing: border-box;
+}
+
+.ntp-header > * {
+  flex-shrink: 0;
+}
+
+.ntp-header-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.9;
+  padding: 8px 10px;
+  border-radius: 6px;
+  transition: opacity 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.ntp-header-link:hover {
+  opacity: 1;
+  text-decoration: none;
+  background-color: var(--shortcut-tile-hover);
+}
+
+/* Google Apps Launcher Waffle Menu */
+.google-apps-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.google-apps-btn {
+  width: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--header-btn-color);
+  border: 1px solid var(--header-btn-border);
+  background-color: var(--header-btn-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.google-apps-btn:hover,
+.google-apps-btn.active {
+  background-color: var(--header-btn-hover) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.04);
+}
+
+.google-apps-dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  width: 320px;
+  max-height: 530px;
+  background: var(--modal-bg);
+  border: 1px solid var(--search-border);
+  border-radius: 24px;
+  box-shadow: var(--modal-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9999;
+  padding: 16px;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transform-origin: top right;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.google-apps-dropdown.hidden {
+  display: none !important;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.95);
+  pointer-events: none;
+}
+
+.g-apps-scroll-container {
+  max-height: 498px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+
+.g-apps-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.g-apps-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.35);
+  border-radius: 3px;
+}
+
+.g-apps-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.6);
+}
+
+.g-apps-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.g-apps-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  padding: 4px 8px 2px 8px;
+}
+
+.g-apps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.g-app-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 4px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: background-color 0.18s ease, transform 0.15s ease;
+}
+
+.g-app-tile:hover {
+  background-color: var(--shortcut-tile-hover);
+  transform: translateY(-2px);
+}
+
+.g-app-icon-wrap {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.g-app-label {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+.g-apps-divider {
+  height: 1px;
+  background-color: var(--search-border);
+  margin: 14px 4px;
+  opacity: 0.6;
+}
+
+.g-apps-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0 8px 0;
+  margin-top: 8px;
+}
+
+.g-apps-more-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 22px;
+  border-radius: 20px;
+  border: 1px solid var(--search-border);
+  background-color: var(--search-bg);
+  color: var(--btn-primary);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s, box-shadow 0.2s, color 0.2s;
+}
+
+.g-apps-more-btn:hover {
+  background-color: var(--shortcut-tile-hover);
+  box-shadow: var(--search-hover-shadow);
+}
+
+/* Profile Switcher */
+.profile-switcher-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-select-btn {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 20px;
+  border: 1px solid var(--header-btn-border);
+  background-color: var(--header-btn-bg);
+  color: var(--header-btn-color);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.profile-select-btn:hover {
+  background-color: var(--header-btn-hover);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.ntp-header-icon-btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--header-btn-color);
+  font-size: 13.5px;
+  font-weight: 500;
+  border: 1px solid var(--header-btn-border);
+  background-color: var(--header-btn-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.ntp-header-icon-btn:hover {
+  background-color: var(--header-btn-hover);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.ntp-header-icon-btn.header-btn-primary {
+  background-color: var(--btn-primary);
+  color: #ffffff;
+  border-color: var(--btn-primary);
+}
+
+.ntp-header-icon-btn.header-btn-primary:hover {
+  background-color: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+}
+
+.mode-toggle-btn.active-add-btn {
+  background-color: var(--btn-primary);
+  color: #ffffff;
+  border-color: var(--btn-primary);
+}
+
+.mode-toggle-btn.active-add-btn:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.ntp-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+  min-height: calc(100vh - 64px);
+  padding-top: max(20px, 3vh);
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: max(60px, 8vh);
+}
+
+/* Google Logo */
+.google-logo-container {
+  order: var(--logo-order, 1);
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.google-logo {
+  height: 86px;
+  width: auto;
+  user-select: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+}
+
+/* Search Bar Container */
+.search-container {
+  order: var(--search-order, 2);
+  width: 100%;
+  max-width: 584px;
+  margin-bottom: 32px;
+  position: relative;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Component Visibility Modifiers */
+body.hide-google-logo .google-logo-container {
+  display: none !important;
+}
+
+body.hide-search-bar .search-container {
+  display: none !important;
+}
+
+body.hide-shortcuts-container .shortcuts-container {
+  display: none !important;
+}
+
+body.hide-header-bar .ntp-header {
+  display: none !important;
+}
+
+/* Free Placement Component Styles */
+.google-logo-container.has-free-position,
+.search-container.has-free-position {
+  margin-bottom: 0 !important;
+  z-index: 40 !important;
+}
+
+body.edit-mode-active .google-logo-container,
+body.edit-mode-active .search-container {
+  outline: 2px dashed var(--input-focus);
+  outline-offset: 4px;
+  border-radius: 16px;
+  cursor: grab;
+  touch-action: none;
+}
+
+body.edit-mode-active .google-logo-container:active,
+body.edit-mode-active .search-container:active {
+  cursor: grabbing;
+}
+
+.section-edit-badge {
+  position: absolute;
+  top: -28px;
+  right: 0;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--modal-bg);
+  border: 1px solid var(--search-border);
+  border-radius: 14px;
+  padding: 3px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body.edit-mode-active .google-logo-container:hover .section-edit-badge,
+body.edit-mode-active .search-container:hover .section-edit-badge {
+  display: flex;
+}
+
+.section-edit-btn {
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.section-edit-btn:hover {
+  background-color: var(--shortcut-tile-hover);
+  color: var(--text-primary);
+}
+
+.section-edit-btn.btn-remove:hover {
+  color: #d93025;
+}
+
+.search-form {
+  position: relative;
+  width: 100%;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  background-color: var(--search-bg);
+  border: 1px solid var(--search-border);
+  border-radius: var(--radius-search);
+  padding: 0 18px;
+  box-shadow: var(--search-shadow);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.search-input-wrapper:hover,
+.search-input-wrapper:focus-within {
+  box-shadow: var(--search-hover-shadow);
+  border-color: transparent;
+}
+
+.search-icon {
+  color: var(--text-secondary);
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.9;
+}
+
+/* Google Lens / Image Search Button */
+.search-lens-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  margin-left: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.search-lens-btn:hover {
+  background-color: var(--shortcut-tile-hover);
+  transform: scale(1.1);
+}
+
+.image-dropzone.drag-over {
+  border-color: var(--btn-primary) !important;
+  background-color: var(--shortcut-tile-hover) !important;
+}
+
+/* Bottom Right Floating Switch Mode Button */
+.switch-ntp-mode-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--search-bg);
+  border: 1px solid var(--search-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 100;
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.switch-ntp-mode-btn:hover {
+  background-color: var(--shortcut-tile-hover);
+  box-shadow: var(--search-hover-shadow);
+  transform: translateY(-1px);
+}
+
+/* Minimal Default Google View Mode */
+body.minimal-ntp-mode .ntp-header,
+body.minimal-ntp-mode .shortcuts-container,
+body.minimal-ntp-mode .edit-toolbar,
+body.minimal-ntp-mode .multiselect-bar {
+  display: none !important;
+}
+
+body.minimal-ntp-mode .ntp-main {
+  padding-top: max(80px, 15vh);
+}
+
+body.minimal-ntp-mode .switch-ntp-mode-btn {
+  background-color: var(--btn-primary);
+  color: #ffffff;
+  border-color: var(--btn-primary);
+}
+
+body.minimal-ntp-mode .switch-ntp-mode-btn:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+/* Toggle Switch Component */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 26px;
+  transition: 0.25s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.25s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+input:checked+.toggle-slider {
+  background-color: var(--btn-primary);
+}
+
+input:checked+.toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* Edit Layout Floating Toolbar */
+.edit-toolbar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--modal-bg);
+  border: 1px solid var(--search-border);
+  border-radius: 32px;
+  box-shadow: var(--modal-shadow);
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease, visibility 0.2s ease;
+}
+
+body.edit-mode-active .edit-toolbar {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Auto-dodge: toolbar becomes non-interactive during drag so tiles can be placed at bottom */
+body.is-actively-dragging .edit-toolbar {
+  opacity: 0.15;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.edit-toolbar-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding-left: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mode-toggle-group {
+  display: flex;
+  background-color: var(--shortcut-icon-bg);
+  border-radius: 18px;
+  padding: 3px;
+  gap: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mode-toggle-btn {
+  padding: 6px 14px;
+  border-radius: 15px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.mode-toggle-btn.active {
+  background-color: var(--search-bg);
+  color: var(--btn-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.btn-done {
+  height: 34px;
+  padding: 0 18px;
+  border-radius: 17px;
+  background-color: var(--btn-primary);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.btn-done:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+/* Responsive Scaling for Edit Toolbar on smaller screens (Never wrap into 2 lines) */
+@media (max-width: 768px) {
+  .edit-toolbar {
+    gap: 8px;
+    padding: 6px 12px;
+    bottom: 16px;
+    border-radius: 28px;
+  }
+  .edit-toolbar-title {
+    font-size: 12px;
+  }
+  .mode-toggle-btn {
+    padding: 5px 10px;
+    font-size: 11.5px;
+  }
+  .btn-done {
+    height: 30px;
+    padding: 0 14px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 580px) {
+  .edit-toolbar {
+    gap: 6px;
+    padding: 4px 8px;
+    max-width: 98vw;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .edit-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+  .edit-toolbar-title {
+    display: none; /* Hide 'Layout Mode:' prefix on small screens to guarantee single-line fit */
+  }
+  .mode-toggle-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  .btn-done {
+    height: 28px;
+    padding: 0 12px;
+    font-size: 11.5px;
+  }
+}
+
+/* Responsive Hamburger Menu Button & Slide-Over Sidebar Drawer */
+.hamburger-menu-btn {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .hamburger-menu-btn {
+    display: flex !important;
+  }
+  .ntp-header .profile-switcher-wrapper,
+  .ntp-header #customize-btn,
+  .ntp-header #new-group-header-btn,
+  .ntp-header .ntp-header-link,
+  .ntp-header .google-apps-wrapper,
+  .ntp-header #settings-btn {
+    display: none !important;
+  }
+}
+
+/* Sidebar Backdrop Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--modal-overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Glassmorphic Slide-Over Sidebar Drawer */
+.sidebar-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  max-width: 85vw;
+  height: 100vh;
+  background-color: var(--modal-bg);
+  border-left: 1px solid var(--search-border);
+  box-shadow: var(--modal-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.28s;
+}
+
+.sidebar-drawer.active {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--search-border);
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sidebar-close-btn {
+  font-size: 16px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.sidebar-close-btn:hover {
+  background-color: var(--shortcut-tile-hover);
+  color: var(--text-primary);
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+.sidebar-profile-wrapper select {
+  width: 100%;
+}
+
+.sidebar-actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-action-btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  border: 1px solid var(--search-border);
+  background-color: var(--search-bg);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.15s;
+}
+
+.sidebar-action-btn:hover {
+  background-color: var(--shortcut-tile-hover);
+  transform: translateX(-2px);
+}

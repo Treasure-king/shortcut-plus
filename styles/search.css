@@ -1,0 +1,159 @@
+/* search.css - Instant Search & Keyboard Navigation Highlight Styling */
+
+/* Search Indicator Badge inside Search Bar */
+.search-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background-color: var(--shortcut-icon-bg);
+  border: 1px solid var(--search-border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Match Counter Badge */
+.search-match-counter {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--btn-primary);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 6px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Filtering active state on shortcut tiles */
+body.search-filtering-active .shortcut-card {
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, backdrop-filter 0.2s ease;
+}
+
+body.search-filtering-active .shortcut-card.search-match {
+  opacity: 1 !important;
+  transform: scale(1.04);
+  box-shadow: 0 0 0 2.5px var(--input-focus), 0 6px 16px rgba(11, 87, 208, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+body.search-filtering-active .shortcut-card.search-dimmed {
+  opacity: 0.18 !important;
+  filter: grayscale(80%);
+}
+
+/* Keyboard Navigation Focus Ring */
+.shortcut-card.keyboard-focused {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--input-focus) !important;
+  background-color: var(--shortcut-tile-hover) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  transform: scale(1.05);
+  z-index: 15;
+}
+
+/* ==========================================================================
+   Google-Style Search History & Autocomplete Dropdown Popup
+   ========================================================================== */
+.search-history-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background-color: var(--search-bg);
+  border: 1px solid var(--search-border);
+  border-radius: 20px;
+  box-shadow: var(--modal-shadow);
+  padding: 10px 0;
+  z-index: 1000;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  animation: searchDropdownFade 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+@keyframes searchDropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.search-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+  user-select: none;
+}
+
+.search-history-item:hover,
+.search-history-item.is-selected {
+  background-color: var(--shortcut-tile-hover);
+}
+
+.search-history-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-history-clock-icon {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.search-history-text {
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.search-history-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-history-item:hover .search-history-delete-btn {
+  opacity: 1;
+}
+
+.search-history-delete-btn:hover {
+  color: #d93025;
+  background-color: rgba(217, 48, 37, 0.12);
+}

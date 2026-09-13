@@ -1,0 +1,14 @@
+# Internal development and scratch docs (hidden from GitHub)
+walkthroughs/
+phases/
+changes/
+concept.md
+MEMORY.md
+screenshots/raw_originals/
+
+# Archives & Temporary files
+webstore_assets/
+*.zip
+.DS_Store
+Thumbs.db
+*.log
