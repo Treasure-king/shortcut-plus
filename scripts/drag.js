@@ -260,24 +260,7 @@ const DragEngine = {
     }
 
     if (e.target.closest('.shortcut-menu-btn')) return;
-    if (e.target.closest('.shortcut-select-checkbox')) return;
-
-    const tileId = tile.dataset.id;
-    const hasModifier = e.shiftKey || e.ctrlKey || e.metaKey;
-
-    if (tileId && typeof ShortcutGrid !== 'undefined') {
-      if (!ShortcutGrid.selectedShortcutIds.has(tileId) && !hasModifier) {
-        // Clicking an unselected tile without modifier: clear other selections, select this tile
-        ShortcutGrid.selectedShortcutIds.clear();
-        ShortcutGrid.selectedShortcutIds.add(tileId);
-        ShortcutGrid.updateMultiselectUI();
-      } else if (hasModifier && !ShortcutGrid.selectedShortcutIds.has(tileId)) {
-        // Shift/Ctrl click on unselected tile: add to selection
-        ShortcutGrid.selectedShortcutIds.add(tileId);
-        ShortcutGrid.updateMultiselectUI();
-        this.justSelectedId = tileId;
-      }
-    }
+    if (e.target.closest('.shortcut-select-checkbox') || e.target.closest('.shortcut-select-overlay')) return;
 
     this.activeTile = tile;
     this.startPos = { x: e.clientX, y: e.clientY };
@@ -522,6 +505,15 @@ const DragEngine = {
             ShortcutStorage.saveSettings({ layoutMode: 'free' });
           }
         }
+      } else if (activeId && typeof ShortcutGrid !== 'undefined' && ShortcutGrid.selectedShortcutIds) {
+        // If dragging a single tile without modifier key, set it as the active selection
+        if (!ShortcutGrid.selectedShortcutIds.has(activeId) && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+          ShortcutGrid.selectedShortcutIds.clear();
+          ShortcutGrid.selectedShortcutIds.add(activeId);
+          ShortcutGrid.updateMultiselectUI();
+        }
+        this.createGhost();
+        this.activeTile.classList.add('is-dragging');
       } else {
         this.createGhost();
         this.activeTile.classList.add('is-dragging');

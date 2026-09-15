@@ -20,6 +20,8 @@ Shortcut+ utilizes standard browser APIs exclusively on your device:
 
 * **Local Storage (`chrome.storage.local` & `unlimitedStorage`):** 
   Shortcut+ saves your custom shortcuts, free-form coordinates, active workspaces, custom wallpaper choices, and local search history on your machine. The `unlimitedStorage` permission ensures your custom themes and extensive shortcut layouts can be saved locally without hitting browser quota restrictions. This data never leaves your computer and is inaccessible to us or any third party.
+* **Chrome Search API (`search` permission):**
+  Shortcut+ uses the official `chrome.search.query` API to execute user-initiated web searches strictly via your chosen default browser search engine (Google, Bing, DuckDuckGo, Ecosia, etc.). Shortcut+ does not modify, track, or intercept your default search provider or search queries.
 
 ---
 
@@ -27,11 +29,9 @@ Shortcut+ utilizes standard browser APIs exclusively on your device:
 
 Shortcut+ does not operate any remote user databases or backend servers. It performs only the following direct network requests to provide user-requested features:
 
-1. **Google Search Suggestions (`https://suggestqueries.google.com/*`):**
-   When typing into the search bar, queries are sent directly from your browser to Google's public autocomplete API to display real-time suggestions. Shortcut+ does not record, log, or proxy these queries.
-2. **Favicon Retrieval (`https://www.google.com/s2/favicons`):**
+1. **Favicon Retrieval (`https://www.google.com/s2/favicons`):**
    When you create a shortcut, the extension requests the website's public icon from Google's public favicon service. If unavailable, an offline letter avatar is generated locally.
-3. **Daily Wallpaper (`https://images.unsplash.com/*`):**
+2. **Daily Wallpaper (`https://images.unsplash.com/*`):**
    If you explicitly choose the "Unsplash Daily" wallpaper mode, the extension loads a curated daily wallpaper directly from Unsplash.
 
 ---

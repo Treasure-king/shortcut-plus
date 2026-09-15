@@ -164,6 +164,8 @@
     <ul>
       <li><strong>Local Storage (<code>chrome.storage.local</code> &amp; <code>unlimitedStorage</code>):</strong> 
       Shortcut+ saves your custom shortcuts, free-form coordinates, active workspaces, custom wallpaper choices, and local search history on your machine. The <code>unlimitedStorage</code> permission ensures your custom themes and extensive shortcut layouts can be saved locally without hitting browser quota restrictions. This data never leaves your computer and is inaccessible to us or any third party.</li>
+      <li><strong>Chrome Search API (<code>search</code> permission):</strong> 
+      Shortcut+ uses the official <code>chrome.search.query</code> API to execute user-initiated web searches strictly via your chosen default browser search engine (Google, Bing, DuckDuckGo, Ecosia, etc.). Shortcut+ does not modify, track, or intercept your default search provider or search queries.</li>
     </ul>
 
     <hr>
@@ -171,8 +173,6 @@
     <h2>3. Network Requests &amp; Third-Party Services</h2>
     <p>Shortcut+ does not operate any remote user databases or backend servers. It performs only the following direct network requests to provide user-requested features:</p>
     <ol>
-      <li><strong>Google Search Suggestions (<code>https://suggestqueries.google.com/*</code>):</strong>
-      When typing into the search bar, queries are sent directly from your browser to Google's public autocomplete API to display real-time suggestions. Shortcut+ does not record, log, or proxy these queries.</li>
       <li><strong>Favicon Retrieval (<code>https://www.google.com/s2/favicons</code>):</strong>
       When you create a shortcut, the extension requests the website's public icon from Google's public favicon service. If unavailable, an offline letter avatar is generated locally.</li>
       <li><strong>Daily Wallpaper (<code>https://images.unsplash.com/*</code>):</strong>

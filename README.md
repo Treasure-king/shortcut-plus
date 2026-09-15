@@ -79,7 +79,7 @@ It preserves Google’s clean New Tab aesthetic while removing its built-in limi
 
 | Shortcut | Action |
 |---|---|
-| `Ctrl + K` or `/` | Focus search bar to filter shortcuts or search Google |
+| `Ctrl + K` or `/` | Focus search bar to filter shortcuts or search the web |
 | `Escape` | Close active modals or exit layout edit mode |
 | `Enter` | Open selected shortcut card or trigger search |
 

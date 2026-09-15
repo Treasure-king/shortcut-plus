@@ -785,18 +785,12 @@ const ShortcutGrid = {
         return false;
       }
 
-      // Fix: Handle direct checkbox clicks using native checked state
-      if (e.target.classList.contains('shortcut-select-checkbox')) {
+      // Handle direct checkbox or overlay clicks
+      if (e.target.classList.contains('shortcut-select-checkbox') || e.target.closest('.shortcut-select-overlay')) {
+        e.preventDefault();
         e.stopPropagation();
-        const checkbox = e.target;
-        if (checkbox.checked) {
-          this.selectedShortcutIds.add(shortcut.id);
-        } else {
-          this.selectedShortcutIds.delete(shortcut.id);
-        }
-        card.classList.toggle('is-selected', checkbox.checked);
-        this.updateMultiselectUI();
-        return;
+        this.toggleShortcutSelection(shortcut.id, card);
+        return false;
       }
 
       const isMultiSelected = this.selectedShortcutIds.has(shortcut.id) && this.selectedShortcutIds.size > 1;
@@ -855,9 +849,7 @@ const ShortcutGrid = {
         e.preventDefault();
         e.stopPropagation();
         if (e.shiftKey || e.ctrlKey || e.metaKey) {
-          if (typeof DragEngine === 'undefined' || DragEngine.justSelectedId !== shortcut.id) {
-            this.toggleShortcutSelection(shortcut.id, card);
-          }
+          this.toggleShortcutSelection(shortcut.id, card);
         } else {
           this.selectSingleForInspection(shortcut, card);
         }

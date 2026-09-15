@@ -21,7 +21,7 @@ const SearchEngine = {
     // Set informative placeholder
     const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
     const hotkey = isMac ? '⌘K' : 'Ctrl+K';
-    this.searchInput.placeholder = `Search Google or filter shortcuts (${hotkey} or /)`;
+    this.searchInput.placeholder = `Search the web or filter shortcuts (${hotkey} or /)`;
 
     const wrapper = this.searchInput.closest('.search-input-wrapper');
     if (wrapper) {
@@ -118,10 +118,15 @@ const SearchEngine = {
       } else if (e.key === 'Enter') {
         if (this.selectedHistoryIndex >= 0 && this.selectedHistoryIndex < items.length) {
           e.preventDefault();
-          const selectedText = items[this.selectedHistoryIndex].dataset.query;
-          if (selectedText) {
-            this.searchInput.value = selectedText;
-            this.executeSearch(selectedText);
+          const selectedItem = items[this.selectedHistoryIndex];
+          if (selectedItem && selectedItem.dataset.url) {
+            window.location.href = FaviconResolver.normalizeUrl(selectedItem.dataset.url);
+          } else {
+            const selectedText = selectedItem?.dataset.query;
+            if (selectedText) {
+              this.searchInput.value = selectedText;
+              this.executeSearch(selectedText);
+            }
           }
         } else {
           this.handleSearchSubmit(e);
@@ -151,27 +156,6 @@ const SearchEngine = {
     });
   },
 
-  async fetchGoogleSuggestions(query) {
-    if (!query || !query.trim()) return [];
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2000);
-      const res = await fetch(`https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query.trim())}`, {
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data) && Array.isArray(data[1])) {
-          return data[1].slice(0, 6);
-        }
-      }
-    } catch (e) {
-      // Abort or network failure - silent fallback
-    }
-    return [];
-  },
-
   async renderHistoryDropdown() {
     if (!this.historyDropdownEl) return;
 
@@ -184,23 +168,81 @@ const SearchEngine = {
       : history;
 
     // Limit history entries
-    filteredHistory = filteredHistory.slice(0, 8);
+    filteredHistory = filteredHistory.slice(0, 6);
 
-    // 2. Fetch live Google search autocomplete suggestions if typing
-    let suggestions = [];
+    // 2. Matching shortcut suggestions if typing
+    let matchingShortcuts = [];
     if (query.length > 0) {
-      suggestions = await this.fetchGoogleSuggestions(query);
-      // Remove suggestions that are already in filtered history
-      suggestions = suggestions.filter(s => !filteredHistory.some(h => h.toLowerCase() === s.toLowerCase()));
+      try {
+        const shortcuts = await ShortcutStorage.getShortcuts();
+        matchingShortcuts = shortcuts.filter(s =>
+          (s.name && s.name.toLowerCase().includes(query.toLowerCase())) ||
+          (s.url && s.url.toLowerCase().includes(query.toLowerCase()))
+        ).slice(0, 4);
+      } catch (e) {
+        // Silent fallback
+      }
     }
 
-    if (filteredHistory.length === 0 && suggestions.length === 0) {
+    if (filteredHistory.length === 0 && matchingShortcuts.length === 0 && !query) {
       this.hideHistoryDropdown();
       return;
     }
 
     this.selectedHistoryIndex = -1;
     this.historyDropdownEl.innerHTML = '';
+
+    // Search Action Item: prompt to search default engine if user typed a query
+    if (query) {
+      const searchItemEl = document.createElement('div');
+      searchItemEl.className = 'search-history-item search-type-query';
+      searchItemEl.dataset.query = query;
+
+      searchItemEl.innerHTML = `
+        <div class="search-history-left">
+          <div class="search-history-clock-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <span class="search-history-text">Search for "<strong>${this.escapeHtml(query)}</strong>"</span>
+        </div>
+      `;
+
+      searchItemEl.addEventListener('click', () => {
+        this.searchInput.value = query;
+        this.executeSearch(query);
+      });
+
+      this.historyDropdownEl.appendChild(searchItemEl);
+    }
+
+    // Render Matching Shortcuts
+    matchingShortcuts.forEach(s => {
+      const itemEl = document.createElement('div');
+      itemEl.className = 'search-history-item search-type-shortcut';
+      itemEl.dataset.query = s.name;
+      itemEl.dataset.url = s.url;
+
+      const faviconUrl = FaviconResolver.getFaviconUrl(s.url);
+      const host = FaviconResolver.getHostname(s.url);
+
+      itemEl.innerHTML = `
+        <div class="search-history-left">
+          <div class="search-history-clock-icon">
+            <img src="${faviconUrl}" alt="" style="width: 16px; height: 16px; border-radius: 50%; object-fit: contain;" onerror="this.style.display='none'">
+          </div>
+          <span class="search-history-text">${this.escapeHtml(s.name)} <span style="font-size: 11px; opacity: 0.6; margin-left: 6px;">${this.escapeHtml(host)}</span></span>
+        </div>
+      `;
+
+      itemEl.addEventListener('click', () => {
+        window.location.href = FaviconResolver.normalizeUrl(s.url);
+      });
+
+      this.historyDropdownEl.appendChild(itemEl);
+    });
 
     // Render Recent Search History Items (Clock Icon 🕒)
     filteredHistory.forEach((histItem) => {
@@ -239,31 +281,10 @@ const SearchEngine = {
       this.historyDropdownEl.appendChild(itemEl);
     });
 
-    // Render Live Google Suggestions (Search Glass Icon 🔍)
-    suggestions.forEach((sugItem) => {
-      const itemEl = document.createElement('div');
-      itemEl.className = 'search-history-item search-type-suggestion';
-      itemEl.dataset.query = sugItem;
-
-      itemEl.innerHTML = `
-        <div class="search-history-left">
-          <div class="search-history-clock-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </div>
-          <span class="search-history-text">${this.escapeHtml(sugItem)}</span>
-        </div>
-      `;
-
-      itemEl.addEventListener('click', () => {
-        this.searchInput.value = sugItem;
-        this.executeSearch(sugItem);
-      });
-
-      this.historyDropdownEl.appendChild(itemEl);
-    });
+    if (this.historyDropdownEl.children.length === 0) {
+      this.hideHistoryDropdown();
+      return;
+    }
 
     this.historyDropdownEl.style.display = 'block';
   },
@@ -292,11 +313,18 @@ const SearchEngine = {
     await ShortcutStorage.addSearchHistory(trimmed);
     this.hideHistoryDropdown();
 
-    // Direct URL navigation vs Google search query (supports localhost, IP ports, domains, hashes)
+    // Direct URL navigation vs default web search
     const isUrlPattern = /^(https?:\/\/)?(localhost|(\d{1,3}\.){3}\d{1,3}|([\w-]+\.)+[\w-]+)(:\d+)?(\/[^\s]*)?$/i.test(trimmed);
     if (isUrlPattern && !trimmed.includes(' ')) {
       window.location.href = FaviconResolver.normalizeUrl(trimmed);
+    } else if (typeof chrome !== 'undefined' && chrome.search && typeof chrome.search.query === 'function') {
+      // Respect user's selected search provider via Chrome Search API (Complies with Chrome Web Store Single Purpose Policy - Red Argon)
+      chrome.search.query({
+        text: trimmed,
+        disposition: 'CURRENT_TAB'
+      });
     } else {
+      // Fallback for non-extension environment
       window.location.href = `https://www.google.com/search?q=${encodeURIComponent(trimmed)}`;
     }
   },
