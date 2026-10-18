@@ -1,0 +1,502 @@
+/* theme.css - Explicit Theme Overrides & Dynamic Wallpaper Glassmorphism Engine */
+
+/* ==========================================================================
+   1. Explicit Light Theme Tokens
+   ========================================================================== */
+[data-theme="light"] {
+  --bg-color: #f8f9fa;
+  --text-primary: #1f1f1f;
+  --text-secondary: #444746;
+  --text-tertiary: #747775;
+
+  --search-bg: #ffffff;
+  --search-border: #dfe1e5;
+  --search-shadow: 0 1px 6px rgba(32, 33, 36, 0.18), 0 1px 2px rgba(32, 33, 36, 0.08);
+  --search-hover-shadow: 0 2px 10px rgba(32, 33, 36, 0.25), 0 1px 3px rgba(32, 33, 36, 0.15);
+
+  --shortcut-tile-hover: rgba(32, 33, 36, 0.06);
+  --shortcut-card-bg: #ffffff;
+  --shortcut-card-border: rgba(0, 0, 0, 0.08);
+  --shortcut-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shortcut-icon-bg: #f0f4f9;
+  --shortcut-icon-border: rgba(0, 0, 0, 0.06);
+  --shortcut-title-color: #1f1f1f;
+
+  --header-btn-bg: #ffffff;
+  --header-btn-border: #dadce0;
+  --header-btn-color: #1f1f1f;
+  --header-btn-hover: #f1f3f4;
+
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(32, 33, 36, 0.6);
+  --modal-shadow: 0 12px 28px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --input-border: #c4c7c5;
+  --input-focus: #0b57d0;
+  --btn-primary: #0b57d0;
+  --btn-primary-hover: #0842a0;
+  --btn-secondary-text: #0b57d0;
+}
+
+[data-theme="light"] select option,
+[data-theme="light"] select.profile-select-btn option,
+[data-theme="light"] select.text-input option {
+  background-color: #ffffff !important;
+  color: #1f1f1f !important;
+}
+
+/* ==========================================================================
+   2. Explicit Dark Theme Tokens
+   ========================================================================== */
+[data-theme="dark"] {
+  --bg-color: #1a1a1e;
+  --text-primary: #f2f2f2;
+  --text-secondary: #c4c7c5;
+  --text-tertiary: #8e918f;
+
+  --search-bg: #28292c;
+  --search-border: rgba(255, 255, 255, 0.12);
+  --search-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --search-hover-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  --shortcut-tile-hover: rgba(255, 255, 255, 0.08);
+  --shortcut-card-bg: rgba(40, 41, 44, 0.85);
+  --shortcut-card-border: rgba(255, 255, 255, 0.1);
+  --shortcut-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shortcut-icon-bg: #303134;
+  --shortcut-icon-border: rgba(255, 255, 255, 0.08);
+  --shortcut-title-color: #f2f2f2;
+
+  --header-btn-bg: #28292c;
+  --header-btn-border: rgba(255, 255, 255, 0.12);
+  --header-btn-color: #f2f2f2;
+  --header-btn-hover: #35363a;
+
+  --modal-bg: #28292c;
+  --modal-overlay: rgba(0, 0, 0, 0.75);
+  --modal-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+
+  --input-border: #5f6368;
+  --input-focus: #a8c7fa;
+  --btn-primary: #a8c7fa;
+  --btn-primary-hover: #c2e7ff;
+  --btn-secondary-text: #a8c7fa;
+}
+
+[data-theme="dark"] select option,
+[data-theme="dark"] select.profile-select-btn option,
+[data-theme="dark"] select.text-input option {
+  background-color: #28292c !important;
+  color: #f2f2f2 !important;
+}
+
+/* ==========================================================================
+   3. Settings Modal Section Layout
+   ========================================================================== */
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--input-border);
+}
+
+.settings-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.settings-sublabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   4. Background Wallpaper Container & Adaptive Contrast Scrim
+   ========================================================================== */
+#bg-wallpaper-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+/* Video & Animated GIF Background Styling */
+.bg-video-element,
+.bg-gif-element,
+.bg-gif-freeze-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Floating Bottom-Left Background Video Controller */
+.bg-video-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 85;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  background: rgba(18, 22, 30, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bg-video-controls:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.38);
+}
+
+.bg-video-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s ease, transform 0.15s ease, color 0.15s ease;
+}
+
+.bg-video-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.08);
+}
+
+.bg-video-btn:active {
+  transform: scale(0.95);
+}
+
+.bg-video-btn svg {
+  display: block;
+}
+
+/* Atmospheric scrim overlay */
+body.bg-mode-unsplash #bg-wallpaper-container::after,
+body.bg-mode-custom #bg-wallpaper-container::after,
+body.bg-mode-preset #bg-wallpaper-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 30%, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.22) 100%);
+  pointer-events: none;
+}
+
+body.bg-mode-unsplash #bg-wallpaper-container,
+body.bg-mode-custom #bg-wallpaper-container,
+body.bg-mode-preset #bg-wallpaper-container {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   5. Dynamic Glassmorphism Mesh Mode
+   ========================================================================== */
+body.bg-mode-glass {
+  background-color: #0b0f19;
+}
+
+body.bg-mode-glass .glass-mesh-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.55;
+  animation: orb-float 20s infinite alternate ease-in-out;
+}
+
+.glass-mesh-1 {
+  top: 10%;
+  left: 15%;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, #2563eb 0%, #1d4ed8 100%);
+}
+
+.glass-mesh-2 {
+  bottom: 12%;
+  right: 12%;
+  width: 540px;
+  height: 540px;
+  background: radial-gradient(circle, #7c3aed 0%, #6d28d9 100%);
+}
+
+.glass-mesh-3 {
+  top: 38%;
+  left: 50%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, #db2777 0%, #be185d 100%);
+}
+
+@keyframes orb-float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -60px) scale(1.1); }
+  100% { transform: translate(-30px, 30px) scale(0.95); }
+}
+
+/* ==========================================================================
+   6. Adaptive High-Contrast UI Overrides When Wallpapers are Active
+   ========================================================================== */
+
+/* Universal Wallpaper Header Contrast Protection */
+body.bg-mode-unsplash .ntp-header-link,
+body.bg-mode-custom .ntp-header-link,
+body.bg-mode-preset .ntp-header-link,
+body.bg-mode-glass .ntp-header-link {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+  font-weight: 500 !important;
+}
+
+/* Wallpaper Header Buttons & Controls (Default / Dark Wallpaper Glass) */
+body.bg-mode-unsplash .ntp-header-icon-btn,
+body.bg-mode-custom .ntp-header-icon-btn,
+body.bg-mode-preset .ntp-header-icon-btn,
+body.bg-mode-glass .ntp-header-icon-btn,
+body.bg-mode-unsplash .profile-select-btn,
+body.bg-mode-custom .profile-select-btn,
+body.bg-mode-preset .profile-select-btn,
+body.bg-mode-glass .profile-select-btn {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(22, 27, 34, 0.75) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.bg-mode-unsplash .ntp-header-icon-btn:hover,
+body.bg-mode-custom .ntp-header-icon-btn:hover,
+body.bg-mode-preset .ntp-header-icon-btn:hover,
+body.bg-mode-glass .ntp-header-icon-btn:hover,
+body.bg-mode-unsplash .profile-select-btn:hover,
+body.bg-mode-custom .profile-select-btn:hover,
+body.bg-mode-preset .profile-select-btn:hover,
+body.bg-mode-glass .profile-select-btn:hover {
+  background-color: rgba(35, 42, 54, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Wallpaper Mode Search Bar Styling */
+body.bg-mode-unsplash .search-input-wrapper,
+body.bg-mode-custom .search-input-wrapper,
+body.bg-mode-preset .search-input-wrapper,
+body.bg-mode-glass .search-input-wrapper {
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.12) !important;
+}
+
+body.bg-mode-unsplash .search-input,
+body.bg-mode-custom .search-input,
+body.bg-mode-preset .search-input,
+body.bg-mode-glass .search-input {
+  color: #1f1f1f !important;
+}
+
+body.bg-mode-unsplash .search-icon,
+body.bg-mode-custom .search-icon,
+body.bg-mode-preset .search-icon,
+body.bg-mode-glass .search-icon {
+  color: #444746 !important;
+}
+
+body.bg-mode-unsplash .search-input::placeholder,
+body.bg-mode-custom .search-input::placeholder,
+body.bg-mode-preset .search-input::placeholder,
+body.bg-mode-glass .search-input::placeholder {
+  color: #5f6368 !important;
+}
+
+/* Wallpaper Mode Shortcut Cards (Dark / Default Glass Tile) */
+body.bg-mode-unsplash .shortcut-card-free,
+body.bg-mode-custom .shortcut-card-free,
+body.bg-mode-preset .shortcut-card-free,
+body.bg-mode-glass .shortcut-card-free,
+body.bg-mode-unsplash .shortcuts-grid.tile-style-pill .shortcut-card,
+body.bg-mode-custom .shortcuts-grid.tile-style-pill .shortcut-card,
+body.bg-mode-preset .shortcuts-grid.tile-style-pill .shortcut-card,
+body.bg-mode-glass .shortcuts-grid.tile-style-pill .shortcut-card {
+  backdrop-filter: blur(var(--shortcut-blur, 20px)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--shortcut-blur, 20px)) saturate(180%);
+  background: var(--shortcut-card-bg, rgba(18, 22, 30, 0.78)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  color: var(--shortcut-title-color, #ffffff) !important;
+}
+
+body.bg-mode-unsplash .shortcut-card-free:hover,
+body.bg-mode-custom .shortcut-card-free:hover,
+body.bg-mode-preset .shortcut-card-free:hover,
+body.bg-mode-glass .shortcut-card-free:hover,
+body.bg-mode-unsplash .shortcuts-grid.tile-style-pill .shortcut-card:hover,
+body.bg-mode-custom .shortcuts-grid.tile-style-pill .shortcut-card:hover,
+body.bg-mode-preset .shortcuts-grid.tile-style-pill .shortcut-card:hover,
+body.bg-mode-glass .shortcuts-grid.tile-style-pill .shortcut-card:hover {
+  background: rgba(28, 34, 48, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.32) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+body.bg-mode-unsplash .shortcut-card-free .shortcut-title,
+body.bg-mode-custom .shortcut-card-free .shortcut-title,
+body.bg-mode-preset .shortcut-card-free .shortcut-title,
+body.bg-mode-glass .shortcut-card-free .shortcut-title,
+body.bg-mode-unsplash .shortcuts-grid.tile-style-pill .shortcut-card .shortcut-title,
+body.bg-mode-custom .shortcuts-grid.tile-style-pill .shortcut-card .shortcut-title,
+body.bg-mode-preset .shortcuts-grid.tile-style-pill .shortcut-card .shortcut-title,
+body.bg-mode-glass .shortcuts-grid.tile-style-pill .shortcut-card .shortcut-title {
+  color: var(--shortcut-title-color, #ffffff) !important;
+  text-shadow: var(--shortcut-title-shadow, 0 1px 3px rgba(0, 0, 0, 0.9)) !important;
+  font-weight: 500 !important;
+}
+
+body.bg-mode-unsplash .shortcut-card-free .shortcut-icon-wrapper,
+body.bg-mode-custom .shortcut-card-free .shortcut-icon-wrapper,
+body.bg-mode-preset .shortcut-card-free .shortcut-icon-wrapper,
+body.bg-mode-glass .shortcut-card-free .shortcut-icon-wrapper {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.bg-mode-unsplash .shortcut-card-add,
+body.bg-mode-custom .shortcut-card-add,
+body.bg-mode-glass .shortcut-card-add {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1.5px dashed rgba(255, 255, 255, 0.45) !important;
+  color: #ffffff !important;
+}
+
+body.bg-mode-unsplash .shortcut-card-add:hover,
+body.bg-mode-custom .shortcut-card-add:hover,
+body.bg-mode-glass .shortcut-card-add:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.bg-mode-unsplash .shortcut-card-add .shortcut-icon-wrapper svg,
+body.bg-mode-custom .shortcut-card-add .shortcut-icon-wrapper svg,
+body.bg-mode-glass .shortcut-card-add .shortcut-icon-wrapper svg {
+  color: #ffffff !important;
+}
+
+body.bg-mode-unsplash .shortcut-card-add .shortcut-title,
+body.bg-mode-custom .shortcut-card-add .shortcut-title,
+body.bg-mode-glass .shortcut-card-add .shortcut-title {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* ==========================================================================
+   7. Explicit Light Theme with Wallpaper Active (Bright Frosted Glass Mode)
+   ========================================================================== */
+[data-theme="light"] body.bg-mode-unsplash .shortcut-card-free,
+[data-theme="light"] body.bg-mode-custom .shortcut-card-free,
+[data-theme="light"] body.bg-mode-unsplash .shortcuts-grid.tile-style-pill .shortcut-card,
+[data-theme="light"] body.bg-mode-custom .shortcuts-grid.tile-style-pill .shortcut-card {
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  background: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  color: #1f1f1f !important;
+}
+
+[data-theme="light"] body.bg-mode-unsplash .shortcut-card-free:hover,
+[data-theme="light"] body.bg-mode-custom .shortcut-card-free:hover,
+[data-theme="light"] body.bg-mode-unsplash .shortcuts-grid.tile-style-pill .shortcut-card:hover,
+[data-theme="light"] body.bg-mode-custom .shortcuts-grid.tile-style-pill .shortcut-card:hover {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22) !important;
+}
+
+[data-theme="light"] body.bg-mode-unsplash .shortcut-card-free .shortcut-title,
+[data-theme="light"] body.bg-mode-custom .shortcut-card-free .shortcut-title,
+[data-theme="light"] body.bg-mode-unsplash .shortcuts-grid.tile-style-pill .shortcut-card .shortcut-title,
+[data-theme="light"] body.bg-mode-custom .shortcuts-grid.tile-style-pill .shortcut-card .shortcut-title {
+  color: var(--shortcut-title-color, #1f1f1f) !important;
+  text-shadow: var(--shortcut-title-shadow, 0 0 1px rgba(255, 255, 255, 0.8)) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] body.bg-mode-unsplash .shortcut-card-free .shortcut-icon-wrapper,
+[data-theme="light"] body.bg-mode-custom .shortcut-card-free .shortcut-icon-wrapper {
+  background: #f0f4f9 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] body.bg-mode-unsplash .ntp-header-icon-btn,
+[data-theme="light"] body.bg-mode-custom .ntp-header-icon-btn,
+[data-theme="light"] body.bg-mode-unsplash .profile-select-btn,
+[data-theme="light"] body.bg-mode-custom .profile-select-btn {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  color: #1f1f1f !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] body.bg-mode-unsplash .shortcut-card-add,
+[data-theme="light"] body.bg-mode-custom .shortcut-card-add {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1.5px dashed rgba(11, 87, 208, 0.5) !important;
+  color: #0b57d0 !important;
+}
+
+[data-theme="light"] body.bg-mode-unsplash .shortcut-card-add .shortcut-title,
+[data-theme="light"] body.bg-mode-custom .shortcut-card-add .shortcut-title {
+  color: #0b57d0 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+[data-theme="light"] body.bg-mode-unsplash .shortcut-card-add .shortcut-icon-wrapper svg,
+[data-theme="light"] body.bg-mode-custom .shortcut-card-add .shortcut-icon-wrapper svg {
+  color: #0b57d0 !important;
+}

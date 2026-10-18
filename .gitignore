@@ -1,0 +1,29 @@
+webstore_assets/
+*.zip
+.DS_Store
+.playwright-mcp/
+
+# Internal planning, notes and build tooling (not part of the public repo)
+concept.md
+memory.md
+MEMORY.md
+memory/
+package.ps1
+changes/
+phases/
+walkthroughs/
+.claude/
+
+# Dependencies and editor/OS files
+node_modules/
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Secrets and keys
+.env
+.env.*
+*.pem
+*.key
+*.crx
