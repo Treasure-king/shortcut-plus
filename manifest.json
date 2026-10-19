@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Shortcut+ - Unlimited New Tab Shortcuts",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "description": "Customizable New Tab shortcuts with free placement, drag & drop, smart alignment guides, and workspaces.",
   "chrome_url_overrides": {
     "newtab": "index.html"
