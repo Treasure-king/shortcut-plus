@@ -1,4 +1,4 @@
-/* search.js - High-prominence Real-time Search Engine, Live Google Suggestions, Search History & Hotkeys */
+/* search.js - Search bar (user's default search engine via chrome.search), Search History & Hotkeys */
 
 const SearchEngine = {
   searchInput: null,
@@ -8,51 +8,12 @@ const SearchEngine = {
   selectedHistoryIndex: -1,
   debounceTimer: null,
   _renderSeq: 0,          // Bumped per render / hide so stale async renders bail out
-  _suggestAbort: null,    // AbortController for the in-flight suggestions fetch
-  _suggestionsAllowed: false, // Google suggestions are opt-in via an optional host permission
 
   init() {
     this.searchInput = document.getElementById('search-input');
     this.historyDropdownEl = document.getElementById('search-history-dropdown');
     this.injectSearchUI();
     this.bindEvents();
-    this.initSuggestionsSetting();
-  },
-
-  // The Settings toggle mirrors the optional suggestqueries.google.com permission, so there is
-  // no separate stored flag that could disagree with what Chrome has granted
-  initSuggestionsSetting() {
-    const perms = typeof chrome !== 'undefined' && chrome.permissions;
-    const row = document.getElementById('suggestions-setting-row');
-    const check = document.getElementById('toggle-suggestions-check');
-    if (!perms || !perms.contains || !row || !check) return;
-
-    const origins = { origins: ['https://suggestqueries.google.com/*'] };
-    const refresh = async () => {
-      try {
-        this._suggestionsAllowed = await perms.contains(origins);
-      } catch (e) {
-        this._suggestionsAllowed = false;
-      }
-      check.checked = this._suggestionsAllowed;
-    };
-
-    row.hidden = false;
-    refresh();
-    check.addEventListener('change', async () => {
-      try {
-        if (check.checked) {
-          await perms.request(origins);
-        } else {
-          await perms.remove(origins);
-        }
-      } catch (e) {
-        console.warn('[Search] Suggestions permission change failed:', e);
-      }
-      refresh();
-    });
-    if (perms.onAdded) perms.onAdded.addListener(refresh);
-    if (perms.onRemoved) perms.onRemoved.addListener(refresh);
   },
 
   injectSearchUI() {
@@ -61,7 +22,7 @@ const SearchEngine = {
     // Set informative placeholder
     const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
     const hotkey = isMac ? '⌘K' : 'Ctrl+K';
-    this.searchInput.placeholder = `Search Google or filter shortcuts (${hotkey} or /)`;
+    this.searchInput.placeholder = `Search the web or filter shortcuts (${hotkey} or /)`;
 
     const wrapper = this.searchInput.closest('.search-input-wrapper');
     if (wrapper) {
@@ -205,35 +166,10 @@ const SearchEngine = {
     });
   },
 
-  async fetchGoogleSuggestions(query, controller = new AbortController()) {
-    if (!query || !query.trim()) return [];
-    try {
-      const timeoutId = setTimeout(() => controller.abort(), 2000);
-      const res = await fetch(`https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query.trim())}`, {
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data) && Array.isArray(data[1])) {
-          return data[1].slice(0, 6);
-        }
-      }
-    } catch (e) {
-      // Abort or network failure - silent fallback
-    }
-    return [];
-  },
-
   async renderHistoryDropdown() {
     if (!this.historyDropdownEl) return;
 
     const seq = ++this._renderSeq;
-    if (this._suggestAbort) {
-      this._suggestAbort.abort();
-      this._suggestAbort = null;
-    }
-
     const query = (this.searchInput.value || '').trim();
     const history = await ShortcutStorage.getSearchHistory();
     if (seq !== this._renderSeq) return;
@@ -246,19 +182,7 @@ const SearchEngine = {
     // Limit history entries
     filteredHistory = filteredHistory.slice(0, 8);
 
-    // 2. Fetch live Google search autocomplete suggestions if typing
-    let suggestions = [];
-    if (query.length > 0 && this._suggestionsAllowed) {
-      const controller = new AbortController();
-      this._suggestAbort = controller;
-      suggestions = await this.fetchGoogleSuggestions(query, controller);
-      if (this._suggestAbort === controller) this._suggestAbort = null;
-      if (seq !== this._renderSeq) return;
-      // Remove suggestions that are already in filtered history
-      suggestions = suggestions.filter(s => !filteredHistory.some(h => h.toLowerCase() === s.toLowerCase()));
-    }
-
-    if (filteredHistory.length === 0 && suggestions.length === 0) {
+    if (filteredHistory.length === 0) {
       this.hideHistoryDropdown();
       return;
     }
@@ -303,42 +227,12 @@ const SearchEngine = {
       this.historyDropdownEl.appendChild(itemEl);
     });
 
-    // Render Live Google Suggestions (Search Glass Icon 🔍)
-    suggestions.forEach((sugItem) => {
-      const itemEl = document.createElement('div');
-      itemEl.className = 'search-history-item search-type-suggestion';
-      itemEl.dataset.query = sugItem;
-
-      itemEl.innerHTML = `
-        <div class="search-history-left">
-          <div class="search-history-clock-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </div>
-          <span class="search-history-text">${this.escapeHtml(sugItem)}</span>
-        </div>
-      `;
-
-      itemEl.addEventListener('click', () => {
-        this.searchInput.value = sugItem;
-        this.executeSearch(sugItem);
-      });
-
-      this.historyDropdownEl.appendChild(itemEl);
-    });
-
     this.historyDropdownEl.style.display = 'block';
   },
 
   hideHistoryDropdown() {
     // Invalidate any in-flight render so it can't re-show the dropdown
     this._renderSeq++;
-    if (this._suggestAbort) {
-      this._suggestAbort.abort();
-      this._suggestAbort = null;
-    }
     if (this.historyDropdownEl) {
       this.historyDropdownEl.style.display = 'none';
       this.selectedHistoryIndex = -1;
@@ -364,11 +258,12 @@ const SearchEngine = {
     await ShortcutStorage.addSearchHistory(trimmed);
     this.hideHistoryDropdown();
 
-    // Direct URL navigation vs Google search query (supports localhost, IP ports, domains, hashes)
+    // Direct URL navigation vs a search with the user's default search engine (Chrome Web Store
+    // policy: a new tab search box must respect the user's search settings via chrome.search)
     if (this.isLikelyUrl(trimmed)) {
       window.location.href = FaviconResolver.normalizeUrl(trimmed);
     } else {
-      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(trimmed)}`;
+      chrome.search.query({ text: trimmed, disposition: 'CURRENT_TAB' });
     }
   },
 

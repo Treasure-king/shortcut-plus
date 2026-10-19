@@ -49,7 +49,7 @@ Shortcut+ includes a comprehensive productivity matrix that allows you to contro
 - <kbd>M</kbd> or <kbd>Alt + M</kbd>: **Multi-Select Mode** — Batch select shortcuts to inspect, resize, or delete together.
 - <kbd>R</kbd> or <kbd>Alt + R</kbd>: **Play Shortcut Runner** — Opens the offline endless runner arcade mini-game.
 - <kbd>S</kbd>, <kbd>Alt + S</kbd>, or <kbd>Ctrl + ,</kbd>: **Settings & Customization** — Opens themes, wallpapers, component toggles, and profiles.
-- <kbd>Ctrl + K</kbd> or <kbd>/</kbd>: **Search Focus** — Jumps cursor into the Google Search bar with live autocomplete and instant tile filtering.
+- <kbd>Ctrl + K</kbd> or <kbd>/</kbd>: **Search Focus** — Jumps cursor into the search bar (searches use your default search engine) with search history and instant tile filtering.
 - <kbd>Esc</kbd>: **Dismiss** — Closes any active modal dialog, slide-over drawer, dropdown menu, or search suggestion popup.
 
 ### 2D Matrix Arrow Navigation:
@@ -69,7 +69,7 @@ Shortcut+ includes a comprehensive productivity matrix that allows you to contro
 
 ### 1. Dual Layout Engines: Smart Grid vs. Free Placement
 - **Smart Grid Mode**: An auto-centering, responsive layout with fluid grid wrapping that automatically organizes your tiles symmetrically on screens of any size.
-- **Free Placement Mode**: Allows you to position shortcuts, category folders, the Google Logo, and the Google Search bar anywhere on your screen.
+- **Free Placement Mode**: Allows you to position shortcuts, category folders, the Google Logo, and the search bar anywhere on your screen.
 - **Smart Snap Distance Rays**: When dragging in Free Placement Mode, smart Photoshop-style SVG guide lines display equal distance spacing between adjacent cards.
 - Hold <kbd>Shift</kbd> while dragging to lock movement strictly to 90° horizontal or vertical axes.
 - **Photoshop-Style Marquee Drag Selection**: In Edit Mode (<kbd>E</kbd>), click and drag anywhere on empty background space to draw a rectangular selection box (dashed blue border with translucent glow). All shortcuts touching or enclosed by the box are instantly selected!

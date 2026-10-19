@@ -55,7 +55,7 @@ It preserves Google’s clean New Tab aesthetic while removing its built-in limi
 - **Frontend**: Vanilla JavaScript (ES6+), HTML5, Vanilla CSS3 (CSS Variables & Flexbox/Grid)
 - **Storage Engine**: `chrome.storage.sync` with `chrome.storage.local` fallback
 - **Dependencies**: 0 External Libraries (Zero bloat, instant ~15ms page loads)
-- **Permissions**: Minimal `["storage"]` permission requested for privacy and security.
+- **Permissions**: Minimal permissions: `storage`, `unlimitedStorage` (local data only) and `search` (runs searches with your default search engine).
 
 ---
 
@@ -79,7 +79,7 @@ It preserves Google’s clean New Tab aesthetic while removing its built-in limi
 
 | Shortcut | Action |
 |---|---|
-| `Ctrl + K` or `/` | Focus search bar to filter shortcuts or search Google |
+| `Ctrl + K` or `/` | Focus search bar to filter shortcuts or search with your default search engine |
 | `Escape` | Close active modals or exit layout edit mode |
 | `Enter` | Open selected shortcut card or trigger search |
 

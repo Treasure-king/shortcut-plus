@@ -171,8 +171,8 @@
     <h2>3. Network Requests &amp; Third-Party Services</h2>
     <p>Shortcut+ does not operate any remote user databases or backend servers. It performs only the following direct network requests to provide user-requested features:</p>
     <ol>
-      <li><strong>Google Search Suggestions (<code>https://suggestqueries.google.com/*</code>):</strong>
-      Off by default. Only if you turn on &ldquo;Google search suggestions&rdquo; in Settings (Chrome asks you to grant this optional permission), what you type into the search bar is sent directly from your browser to Google's public autocomplete API to display real-time suggestions. Shortcut+ does not record, log, or proxy these queries. Turning the setting off removes the permission.</li>
+      <li><strong>Search Bar (your default search engine):</strong>
+      Searches you type into the search bar are handed to Chrome through the <code>chrome.search</code> API and run with the search engine you chose in Chrome's settings. Shortcut+ does not send, record, or proxy these queries itself; submitted searches are only kept in your local search history.</li>
       <li><strong>Favicon Retrieval (<code>https://www.google.com/s2/favicons</code>):</strong>
       When you create a shortcut, the extension requests the website's public icon from Google's public favicon service. If unavailable, an offline letter avatar is generated locally.</li>
       <li><strong>Daily Wallpaper (<code>https://images.unsplash.com/*</code>):</strong>

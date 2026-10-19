@@ -736,7 +736,7 @@
         <button type="button" class="section-edit-btn btn-remove" id="search-hide-btn" title="Hide Search Bar">✕
           Hide</button>
       </div>
-      <form class="search-form" id="search-form" action="https://www.google.com/search" method="GET">
+      <form class="search-form" id="search-form" role="search">
         <div class="search-input-wrapper">
           <div class="search-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -746,7 +746,7 @@
             </svg>
           </div>
           <input type="text" name="q" class="search-input" id="search-input"
-            placeholder="Search Google or filter shortcuts (Ctrl+K or /)" autocomplete="off">
+            placeholder="Search the web or filter shortcuts (Ctrl+K or /)" autocomplete="off">
         </div>
       </form>
 
@@ -1357,16 +1357,6 @@
             </button>
           </div>
 
-          <div class="settings-row" id="suggestions-setting-row" style="margin-bottom: 10px;" hidden>
-            <div>
-              <div class="settings-label">Google search suggestions</div>
-              <div class="settings-sublabel">Show live suggestions while you type. What you type is sent to Google; Chrome asks for permission the first time.</div>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="toggle-suggestions-check" aria-label="Google search suggestions">
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
 
           <div
             style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; background-color: var(--shortcut-icon-bg); padding: 10px 12px; border-radius: 8px;">
@@ -1652,7 +1642,7 @@
                 </tr>
                 <tr>
                   <td class="doc-kbd-cell"><span class="doc-kbd">Ctrl+K</span> or <span class="doc-kbd">/</span></td>
-                  <td>Focus Google Search & live shortcut filter</td>
+                  <td>Focus search bar & live shortcut filter</td>
                 </tr>
                 <tr>
                   <td class="doc-kbd-cell"><span class="doc-kbd">←</span> <span class="doc-kbd">↑</span> <span
